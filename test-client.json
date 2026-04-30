@@ -1,0 +1,273 @@
+{
+  "token": "test-token-abc123",
+  "data": {
+    "client": {
+      "id": "client_001",
+      "firstName": "Maria",
+      "fullName": "Maria Elena Vasquez",
+      "photoUrl": "https://i.pravatar.cc/150?u=maria-vasquez"
+    },
+
+    "caseStage": "Filing",
+
+    "caseNumber": "BK-2026-04-00817",
+    "filingDate": "2026-03-12T09:00:00.000Z",
+    "meetingDate": "2026-05-08T10:30:00.000Z",
+    "meetingLocation": "341 Meeting Room B, 300 N. Los Angeles St, Los Angeles, CA 90012",
+    "dischargeDate": null,
+
+    "retainerAgreement": {
+      "status": "signed",
+      "signedDate": "2026-02-28T16:45:00.000Z"
+    },
+
+    "tasks": [
+      {
+        "id": "task_001",
+        "title": "Connect your bank accounts via Plaid",
+        "status": "completed",
+        "type": "plaid"
+      },
+      {
+        "id": "task_002",
+        "title": "Review and sign your retainer agreement",
+        "status": "completed",
+        "type": "review",
+        "link": "/retainer"
+      },
+      {
+        "id": "task_003",
+        "title": "Complete your means test form",
+        "status": "completed",
+        "type": "form",
+        "link": "/forms/means-test"
+      },
+      {
+        "id": "task_004",
+        "title": "Upload your last two tax returns",
+        "status": "pending",
+        "type": "document",
+        "dueDate": "2026-05-01T23:59:59.000Z",
+        "urgent": true
+      },
+      {
+        "id": "task_005",
+        "title": "Make your next installment payment",
+        "status": "pending",
+        "type": "payment",
+        "link": "/billing",
+        "dueDate": "2026-05-01T23:59:59.000Z"
+      },
+      {
+        "id": "task_006",
+        "title": "Complete credit counseling certificate",
+        "status": "pending",
+        "type": "document",
+        "link": "https://ccadvising.org",
+        "dueDate": "2026-04-30T23:59:59.000Z"
+      }
+    ],
+
+    "documents": [
+      {
+        "id": "doc_001",
+        "name": "Government-Issued Photo ID",
+        "status": "completed"
+      },
+      {
+        "id": "doc_002",
+        "name": "Last 6 Months of Bank Statements",
+        "status": "needs_resubmission",
+        "instructionsUrl": "/instructions/bank-statements",
+        "note": "Statements are missing pages 3–5 for the Chase account ending in 4821. Please resubmit the complete set."
+      },
+      {
+        "id": "doc_003",
+        "name": "2024 Federal Tax Return",
+        "status": "unsubmitted",
+        "instructionsUrl": "/instructions/tax-returns"
+      },
+      {
+        "id": "doc_004",
+        "name": "2023 Federal Tax Return",
+        "status": "unsubmitted",
+        "instructionsUrl": "/instructions/tax-returns"
+      },
+      {
+        "id": "doc_005",
+        "name": "Most Recent Pay Stubs (60 days)",
+        "status": "completed"
+      },
+      {
+        "id": "doc_006",
+        "name": "Credit Counseling Certificate",
+        "status": "unsubmitted",
+        "instructionsUrl": "/instructions/credit-counseling"
+      }
+    ],
+
+    "billing": {
+      "balance": 2800,
+      "remaining": 1900,
+      "paid": 900,
+      "totalFees": 2800,
+      "nextPaymentDue": "2026-05-01",
+      "nextPaymentAmount": 300,
+      "paymentMethod": "manual",
+      "dateChangesUsed": 1,
+      "dateChangesAllowed": 2,
+      "bounceFee": 0,
+      "installments": [
+        {
+          "num": 1,
+          "of": 6,
+          "amount": 600,
+          "status": "paid",
+          "date": "2026-02-28",
+          "method": "manual"
+        },
+        {
+          "num": 2,
+          "of": 6,
+          "amount": 300,
+          "status": "paid",
+          "date": "2026-03-28",
+          "method": "manual"
+        },
+        {
+          "num": 3,
+          "of": 6,
+          "amount": 300,
+          "status": "upcoming",
+          "date": "2026-05-01",
+          "method": "manual"
+        },
+        {
+          "num": 4,
+          "of": 6,
+          "amount": 300,
+          "status": "scheduled",
+          "date": "2026-06-01",
+          "method": "manual"
+        },
+        {
+          "num": 5,
+          "of": 6,
+          "amount": 800,
+          "status": "scheduled",
+          "date": "2026-07-01",
+          "method": "manual"
+        },
+        {
+          "num": 6,
+          "of": 6,
+          "amount": 500,
+          "status": "scheduled",
+          "date": "2026-08-01",
+          "method": "manual"
+        }
+      ]
+    },
+
+    "plaidAccounts": [
+      {
+        "id": "acct_1",
+        "institution": "Chase",
+        "accountName": "Chase Total Checking ••4821",
+        "type": "checking",
+        "status": "connected",
+        "lastSync": "2026-04-25T08:14:00.000Z"
+      },
+      {
+        "id": "acct_2",
+        "institution": "Wells Fargo",
+        "accountName": "Wells Fargo Savings ••9203",
+        "type": "savings",
+        "status": "disconnected",
+        "lastSync": "2026-03-18T11:42:00.000Z"
+      },
+      {
+        "id": "acct_3",
+        "institution": "Capital One",
+        "accountName": "Capital One Quicksilver ••7714",
+        "type": "credit",
+        "status": "connected",
+        "lastSync": "2026-04-25T08:14:00.000Z"
+      }
+    ],
+
+    "messageThreads": [
+      {
+        "id": "thread_001",
+        "subject": "Welcome to Your Client Portal",
+        "status": "resolved",
+        "messages": [
+          {
+            "id": "msg_001",
+            "sender": "staff",
+            "senderName": "Andrew Curtis",
+            "text": "Welcome to the Lincoln Law client portal, Maria. This is where you can track your case, upload documents, manage payments, and message our team. We're glad to have you with us and will be guiding you through each step of your bankruptcy filing. Feel free to reach out here anytime — we typically respond within one business day.",
+            "time": "2026-02-28T17:00:00.000Z",
+            "isIntro": true
+          },
+          {
+            "id": "msg_002",
+            "sender": "client",
+            "text": "Thank you! This is really easy to navigate. Quick question — do I need to upload both years of tax returns at the same time?",
+            "time": "2026-03-01T09:22:00.000Z"
+          },
+          {
+            "id": "msg_003",
+            "sender": "staff",
+            "senderName": "Andrew Curtis",
+            "text": "Great question, Maria. You can upload them separately — just make sure both are in before your 341 meeting on May 8th. Let us know if you have trouble getting them.",
+            "time": "2026-03-01T11:05:00.000Z"
+          },
+          {
+            "id": "msg_004",
+            "sender": "staff",
+            "senderName": "Andrew Curtis",
+            "text": "This thread has been resolved.",
+            "time": "2026-03-01T11:06:00.000Z",
+            "isResolution": true
+          }
+        ]
+      },
+      {
+        "id": "thread_002",
+        "subject": "Bank statements — resubmission needed",
+        "status": "open",
+        "messages": [
+          {
+            "id": "msg_010",
+            "sender": "staff",
+            "senderName": "Jessica Park",
+            "text": "About your conversations with Jessica Park",
+            "time": "2026-04-10T09:00:00.000Z",
+            "isIntro": true
+          },
+          {
+            "id": "msg_011",
+            "sender": "staff",
+            "senderName": "Jessica Park",
+            "text": "Hi Maria, we reviewed the Chase bank statements you submitted and noticed pages 3 through 5 are missing for the account ending in 4821. Could you reupload the complete document? You can do this from the Documents tab.",
+            "time": "2026-04-10T09:01:00.000Z"
+          },
+          {
+            "id": "msg_012",
+            "sender": "client",
+            "text": "Oh no, sorry about that! I'll get the full statement from Chase's website and upload it today.",
+            "time": "2026-04-10T10:48:00.000Z"
+          },
+          {
+            "id": "msg_013",
+            "sender": "staff",
+            "senderName": "Jessica Park",
+            "text": "No worries at all, it happens. Just make sure you download the full statement PDF rather than the transaction export. Let us know if you run into any issues.",
+            "time": "2026-04-10T11:15:00.000Z"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lincoln Law Client Portal — Billing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','ui-sans-serif','system-ui','sans-serif']}}}}</script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom) }
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    .animate-fade-in { animation: fadeIn .5s ease-out }
+    @keyframes growWidth { from { width: 0 } }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="data.js"></script>
+  <script src="shared.js"></script>
+  <script src="sandbox.js"></script>
+  <script>
+    const data = window.PORTAL_DATA;
+    const container = injectLayout();
+    const b = data.billing;
+
+    let payMethod = b.paymentMethod;
+    let dateChangesUsed = b.dateChangesUsed;
+
+    const paidPct = Math.round((b.paid / b.totalFees) * 100);
+
+    function isOverdue() {
+      return b.installments.some(i => i.status === 'overdue');
+    }
+
+    function renderInstallmentRow(inst) {
+      const isPaid      = inst.status === 'paid';
+      const isOverdueR  = inst.status === 'overdue';
+      const isUpcoming  = inst.status === 'upcoming';
+      const isFailed    = inst.status === 'failed';
+      const isScheduled = inst.status === 'scheduled';
+
+      const statusBadge = isPaid
+        ? `<span class="text-[11px] font-medium text-emerald-600">Paid</span>`
+        : isOverdueR
+          ? `<span class="text-[11px] font-medium text-red-600">Overdue</span>`
+          : isFailed
+            ? `<span class="text-[11px] font-medium text-red-600">Failed</span>`
+            : isUpcoming
+              ? `<span class="text-[11px] font-medium text-amber-600">Upcoming</span>`
+              : `<span class="text-[11px] font-medium text-stone-400">Scheduled</span>`;
+
+      const methodBadge = !isPaid && !isFailed
+        ? inst.method === 'automatic'
+          ? `<span class="text-[9px] font-semibold text-emerald-600 flex items-center gap-0.5"><i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> Auto</span>`
+          : `<span class="text-[9px] font-semibold text-stone-400 flex items-center gap-0.5"><i data-lucide="hand" class="w-2.5 h-2.5"></i> Manual</span>`
+        : '';
+
+      const retryLink = isFailed
+        ? `<a href="#placeholder-retry-payment" class="text-[11px] font-semibold text-[#1e3a5c] hover:underline">Retry →</a>`
+        : '';
+
+      const iconBg = isPaid ? 'bg-emerald-50' : (isOverdueR || isFailed) ? 'bg-red-50' : isUpcoming ? 'bg-amber-50' : 'bg-stone-100';
+      const iconEl = isPaid
+        ? `<i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500"></i>`
+        : isOverdueR
+          ? `<i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i>`
+          : isFailed
+            ? `<i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>`
+            : isUpcoming
+              ? `<i data-lucide="clock" class="w-5 h-5 text-amber-500"></i>`
+              : `<i data-lucide="lock" class="w-5 h-5 text-stone-400"></i>`;
+
+      const dateStr = isPaid ? `Paid ${fmtDate(inst.date)}` : isFailed ? `Failed ${fmtDate(inst.date)}` : `Due ${fmtDate(inst.date)}`;
+
+      return `<div class="px-5 py-4 flex items-center justify-between ${isScheduled ? 'opacity-40' : ''}">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 ${iconBg} rounded-xl flex items-center justify-center shrink-0">${iconEl}</div>
+          <div>
+            <p class="text-sm font-semibold text-stone-900">Payment ${inst.num} of ${inst.of}</p>
+            <p class="text-xs text-stone-400 mt-0.5">${dateStr}</p>
+          </div>
+        </div>
+        <div class="text-right space-y-1">
+          <p class="text-sm font-semibold text-stone-900">$${money(inst.amount)}</p>
+          <div class="flex items-center justify-end gap-2">
+            ${statusBadge}
+            ${retryLink || methodBadge}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function renderPage() {
+      const dateChangesLeft = b.dateChangesAllowed - dateChangesUsed;
+      const installments = b.installments;
+      const overdue = isOverdue();
+      const paidInFull = b.remaining === 0;
+      const activeInst = installments.find(i => i.status === 'upcoming' || i.status === 'overdue' || i.status === 'failed');
+
+      container.innerHTML = `
+      <div class="space-y-4 animate-fade-in max-w-2xl mx-auto pb-12">
+
+        <!-- Page Header -->
+        <div class="pt-1 pb-2">
+          <h1 class="text-2xl font-bold text-stone-900 tracking-tight ll-serif">Billing</h1>
+          <p class="text-sm text-stone-500 font-light mt-0.5">${data.caseStage === 'Fresh Start' ? 'Case Complete — Paid in Full' : 'Chapter 7 Bankruptcy — Retainer Agreement'}</p>
+        </div>
+
+        ${data.retainerAgreement && data.retainerAgreement.status === 'pending_signature' ? `
+        <!-- Retainer Agreement (action required) -->
+        <div class="bg-white rounded-xl border border-amber-200 shadow-sm overflow-hidden">
+          <div class="px-5 py-4 border-b border-stone-100">
+            <h2 class="text-base font-bold text-stone-900 ll-serif">Retainer Agreement</h2>
+          </div>
+          <div class="p-5 space-y-4">
+            <p class="text-sm text-stone-500 leading-relaxed">Please review and sign your retainer agreement before we can begin work on your case.</p>
+            <button onclick="openRetainerModal()" class="w-full bg-[#1c1917] text-white rounded-xl p-4 flex items-center justify-between hover:bg-stone-900 transition-all group">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
+                  <i data-lucide="file-text" class="w-5 h-5 text-white"></i>
+                </div>
+                <div class="text-left">
+                  <p class="font-bold text-white text-sm">Sign Retainer Agreement</p>
+                  <p class="text-stone-400 text-xs mt-0.5">Review and digitally sign</p>
+                </div>
+              </div>
+              <i data-lucide="arrow-right" class="w-5 h-5 text-stone-500 group-hover:text-white transition-colors"></i>
+            </button>
+          </div>
+        </div>
+        ` : ''}
+
+        <!-- Fee Summary -->
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-white rounded-xl p-4 border border-stone-100 shadow-sm text-center">
+            <p class="text-xs font-medium text-stone-400 mb-1.5">Total</p>
+            <p class="text-xl font-bold text-stone-900">$${b.totalFees.toLocaleString()}</p>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-stone-100 shadow-sm text-center">
+            <p class="text-xs font-medium text-stone-400 mb-1.5">Paid</p>
+            <p class="text-xl font-bold text-emerald-600">$${b.paid.toLocaleString()}</p>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-stone-100 shadow-sm text-center">
+            <p class="text-xs font-medium text-stone-400 mb-1.5">Remaining</p>
+            <p class="text-xl font-bold text-stone-600">$${b.remaining.toLocaleString()}</p>
+          </div>
+        </div>
+        <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden -mt-1">
+          <div class="h-full bg-emerald-400 rounded-full" style="width:${paidPct}%;animation:growWidth 1s ease-out"></div>
+        </div>
+
+        <!-- Next Payment Card / Paid in Full -->
+        ${paidInFull ? `
+        <div class="bg-white rounded-xl border border-emerald-200 shadow-sm overflow-hidden">
+          <div class="p-5 flex items-center gap-4">
+            <div class="w-11 h-11 bg-emerald-50 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-500"></i>
+            </div>
+            <div>
+              <p class="font-bold text-stone-900">Paid in Full</p>
+              <p class="text-sm text-stone-400 mt-0.5">Your balance has been settled — thank you.</p>
+            </div>
+          </div>
+        </div>
+        ` : `
+        <div class="bg-white rounded-xl border ${overdue ? 'border-red-200' : 'border-stone-100'} shadow-sm overflow-hidden">
+          <div class="px-5 py-4 border-b border-stone-100">
+            <h2 class="text-base font-bold text-stone-900 ll-serif">Next Payment</h2>
+          </div>
+          <div class="p-5">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-3xl font-bold text-stone-900 tracking-tight">$${money(b.nextPaymentAmount)}</p>
+                <p class="text-sm mt-1 ${overdue ? 'text-red-500 font-semibold' : 'text-stone-500'}">
+                  ${overdue ? 'Overdue · ' : 'Due '}${fmtDate(b.nextPaymentDue)}
+                </p>
+                <p class="text-xs text-stone-400 mt-0.5">Payment ${activeInst ? activeInst.num + ' of ' + activeInst.of : '—'}</p>
+              </div>
+              <div class="flex flex-col items-end gap-2 shrink-0">
+                ${payMethod === 'automatic'
+                  ? `<div class="flex items-center gap-1.5 text-emerald-700 text-xs font-semibold">
+                       <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Autopay on
+                     </div>`
+                  : `<div class="flex items-center gap-1.5 text-stone-500 text-xs font-semibold">
+                       <i data-lucide="hand" class="w-3.5 h-3.5"></i> Manual
+                     </div>
+                     <button onclick="openAutopayModal()" class="text-[11px] font-semibold text-[#1e3a5c] hover:underline">
+                       Set up autopay →
+                     </button>`
+                }
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-stone-50 flex items-center justify-between gap-3">
+              ${dateChangesLeft > 0
+                ? `<div class="flex items-center gap-2 text-xs text-stone-400">
+                     <i data-lucide="calendar-clock" class="w-3.5 h-3.5 shrink-0"></i>
+                     ${dateChangesLeft} free date change${dateChangesLeft !== 1 ? 's' : ''} remaining
+                   </div>
+                   <button onclick="openReschedule(${dateChangesLeft})" class="text-xs font-semibold text-[#1e3a5c] hover:underline shrink-0">
+                     Reschedule →
+                   </button>`
+                : `<div class="flex items-center gap-1.5 text-xs text-stone-400">
+                     <i data-lucide="info" class="w-3.5 h-3.5 shrink-0"></i>
+                     No free changes remaining —
+                     <a href="communication.html" class="text-[#1e3a5c] font-semibold hover:underline">message us</a>
+                   </div>`
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Make a Payment CTA -->
+        <button id="btn-pay" class="w-full bg-[#1c1917] text-white rounded-xl p-5 flex items-center justify-between hover:bg-stone-900 transition-all shadow-sm group">
+          <div class="flex items-center gap-4">
+            <div class="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="credit-card" class="w-5 h-5 text-white"></i>
+            </div>
+            <div class="text-left">
+              <p class="font-bold text-white text-base">Make a Payment</p>
+              <p class="text-stone-400 text-xs mt-0.5">Apply funds toward your retainer</p>
+            </div>
+          </div>
+          <i data-lucide="arrow-right" class="w-5 h-5 text-stone-500 group-hover:text-white transition-colors"></i>
+        </button>
+        `}
+
+        <!-- Payment Schedule -->
+        <div class="bg-white rounded-xl border border-stone-100 shadow-sm overflow-hidden">
+          <div class="px-5 py-4 border-b border-stone-100">
+            <h2 class="text-base font-bold text-stone-900 ll-serif">Payment Schedule</h2>
+          </div>
+          <div class="divide-y divide-stone-50">
+            ${installments.map(inst => renderInstallmentRow(inst)).join('')}
+          </div>
+        </div>
+
+      </div>`;
+
+      lucide.createIcons({ nameAttr: 'data-lucide' });
+
+      if (!paidInFull) {
+        document.getElementById('btn-pay').addEventListener('click', () => {
+          payMethod === 'automatic' ? showDuplicateWarning() : openPaymentModal();
+        });
+      }
+    }
+
+    // ── Payment Modal ────────────────────────────────────
+
+    function openPaymentModal() {
+      let amount = b.nextPaymentAmount;
+
+      function renderModal() {
+        showModal(`
+          <div class="px-5 py-4 border-b border-stone-100 flex items-center justify-between">
+            <h3 class="font-bold text-stone-900 text-lg">Make a Payment</h3>
+            <button onclick="hideModal()" class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+              <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+            </button>
+          </div>
+          <div class="p-5 space-y-4">
+            <div>
+              <p class="text-xs font-medium text-stone-500 mb-3">Select Amount</p>
+              <div class="grid grid-cols-2 gap-2 mb-3">
+                <button onclick="selectPreset(${b.nextPaymentAmount})" class="py-3.5 rounded-xl border-2 ${amount === b.nextPaymentAmount ? 'border-[#1e3a5c] bg-[#1e3a5c]/5' : 'border-stone-200 hover:border-stone-300'} transition-all text-center">
+                  <span class="block text-xs font-semibold text-stone-500 mb-0.5">Suggested</span>
+                  <span class="text-lg font-bold text-stone-900">$${money(b.nextPaymentAmount)}</span>
+                </button>
+                <button onclick="selectPreset(${b.remaining})" class="py-3.5 rounded-xl border-2 ${amount === b.remaining ? 'border-[#1e3a5c] bg-[#1e3a5c]/5' : 'border-stone-200 hover:border-stone-300'} transition-all text-center">
+                  <span class="block text-xs font-semibold text-stone-500 mb-0.5">Pay in Full</span>
+                  <span class="text-lg font-bold text-stone-900">$${money(b.remaining)}</span>
+                </button>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-stone-500 block mb-2">Custom Amount</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 font-medium text-sm">$</span>
+                  <input id="amount-input" type="number" min="1" max="${b.remaining}" value="${amount}"
+                    oninput="updatePayAmount(this.value)"
+                    class="w-full pl-8 pr-4 py-3 rounded-md border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#1e3a5c]/20 focus:border-[#1e3a5c] text-sm font-semibold">
+                </div>
+              </div>
+            </div>
+            <div class="border-l-2 border-amber-400 pl-4 py-1.5">
+              <p class="text-xs text-stone-500">A <strong class="text-stone-700">$${b.bounceFee} fee</strong> applies to returned or failed payments.</p>
+            </div>
+            <a href="#placeholder-process-payment" id="pay-now-btn"
+              class="block w-full bg-[#1c1917] text-white py-4 rounded-xl font-bold text-center hover:bg-stone-900 transition-colors">
+              Pay $${money(amount)} Now
+            </a>
+          </div>`);
+
+        window.selectPreset = function(val) { amount = val; renderModal(); };
+        window.updatePayAmount = function(val) {
+          amount = Math.max(1, Math.min(b.remaining, Number(val) || 1));
+          const btn = document.getElementById('pay-now-btn');
+          if (btn) btn.textContent = `Pay $${money(amount)} Now`;
+        };
+        const payBtn = document.getElementById('pay-now-btn');
+        if (payBtn) {
+          payBtn.addEventListener('click', function () {
+            const activeInst = b.installments.find(i => i.status === 'upcoming' || i.status === 'overdue' || i.status === 'failed');
+            portalAPI('POST', '/api/portal/{clientId}/billing/pay', { amount, installmentNum: activeInst?.num });
+          });
+        }
+      }
+
+      renderModal();
+    }
+
+    // ── Duplicate Payment Warning ────────────────────────
+
+    function showDuplicateWarning() {
+      showModal(`
+        <div class="p-6 pb-2 text-center">
+          <div class="w-14 h-14 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="alert-triangle" class="w-7 h-7 text-amber-500"></i>
+          </div>
+          <h3 class="text-lg font-bold text-stone-900 mb-2">Autopay Is Active</h3>
+          <p class="text-sm text-stone-500 leading-relaxed">
+            You have an automatic payment of <strong>$${money(b.nextPaymentAmount)}</strong> scheduled for
+            <strong>${fmtDate(b.nextPaymentDue)}</strong>.
+            Making a payment now would be in addition to that scheduled amount.
+          </p>
+        </div>
+        <div class="p-6 pt-4 space-y-3">
+          <button onclick="hideModal();openPaymentModal()" class="w-full bg-stone-900 text-white py-3.5 rounded-xl font-bold text-center hover:bg-stone-800 transition-colors">
+            Make an Additional Payment
+          </button>
+          <button onclick="hideModal()" class="w-full bg-white border border-stone-200 text-stone-700 py-3.5 rounded-xl font-bold text-center hover:bg-stone-50 transition-colors">
+            Cancel
+          </button>
+        </div>`);
+    }
+
+    // ── Reschedule Modal ─────────────────────────────────
+
+    function openReschedule(changesLeft) {
+      const suggested = new Date(b.nextPaymentDue);
+      suggested.setDate(suggested.getDate() + 7);
+
+      showModal(`
+        <div class="px-6 py-5 border-b border-stone-100 flex items-center justify-between">
+          <h3 class="font-bold text-stone-900">Reschedule Payment</h3>
+          <button onclick="hideModal()" class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+            <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div class="border-l-2 border-stone-300 pl-4 py-2">
+            <p class="text-sm font-medium text-stone-700">
+              You have <strong>${changesLeft}</strong> free date change${changesLeft !== 1 ? 's' : ''} remaining.
+            </p>
+            <p class="text-xs text-stone-400 mt-0.5">After that, a $50 fee applies to late or failed payments.</p>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-stone-500 block mb-2">New Due Date</label>
+            <input type="date" id="new-date-input"
+              value="${suggested.toISOString().split('T')[0]}"
+              min="${new Date().toISOString().split('T')[0]}"
+              class="w-full px-4 py-3 rounded-md border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#1e3a5c]/20 focus:border-[#1e3a5c] text-sm">
+          </div>
+          <div class="flex justify-end gap-3">
+            <button onclick="hideModal()" class="px-4 py-2 text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors">Cancel</button>
+            <button onclick="confirmReschedule()" class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="check" class="w-4 h-4"></i> Confirm
+            </button>
+          </div>
+        </div>`);
+    }
+
+    function confirmReschedule() {
+      const input = document.getElementById('new-date-input');
+      if (!input?.value) return;
+      const activeInst = b.installments.find(i => i.status === 'upcoming' || i.status === 'overdue' || i.status === 'failed');
+      portalAPI('POST', '/api/portal/{clientId}/billing/reschedule', { installmentNum: activeInst?.num, newDate: input.value });
+      dateChangesUsed += 1;
+      b.nextPaymentDue = new Date(input.value).toISOString();
+      hideModal();
+      renderPage();
+    }
+
+    // ── Autopay Modal ────────────────────────────────────
+
+    function openAutopayModal() {
+      showModal(`
+        <div class="px-6 py-5 border-b border-stone-100 flex items-center justify-between">
+          <h3 class="font-bold text-stone-900">Set Up Autopay</h3>
+          <button onclick="hideModal()" class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+            <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div class="border-l-2 border-emerald-400 pl-4 py-2">
+            <p class="text-sm font-semibold text-stone-800 mb-1">How autopay works</p>
+            <p class="text-sm text-stone-500 leading-relaxed">Your scheduled payments process automatically on the due date. You'll receive a reminder 3 days before each payment.</p>
+          </div>
+          <div class="flex justify-end gap-3">
+            <button onclick="hideModal()" class="px-4 py-2 text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors">Not Now</button>
+            <button onclick="confirmAutopay()" class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Enable Autopay
+            </button>
+          </div>
+        </div>`);
+    }
+
+    function confirmAutopay() {
+      portalAPI('POST', '/api/portal/{clientId}/billing/autopay', { enabled: true });
+      payMethod = 'automatic';
+      hideModal();
+      renderPage();
+    }
+
+    // ── Retainer Agreement Modal ─────────────────────────────────────────
+
+    function openRetainerModal() {
+      showModal(`
+        <div class="px-5 py-4 border-b border-stone-100 flex items-center justify-between">
+          <h3 class="font-bold text-stone-900 text-lg ll-serif">Retainer Agreement</h3>
+          <button onclick="hideModal()" class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+            <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+          </button>
+        </div>
+        <div class="p-5 space-y-4">
+          <div class="bg-stone-50 rounded-xl p-4 space-y-3 text-sm text-stone-600 leading-relaxed border border-stone-100 max-h-48 overflow-y-auto">
+            <p class="font-semibold text-stone-900">Lincoln Law Office<br><span class="font-normal text-stone-500">Chapter 7 Bankruptcy Retainer Agreement</span></p>
+            <p>This agreement confirms that you have retained Lincoln Law to represent you in your Chapter 7 bankruptcy case. Our flat fee of <strong class="text-stone-800">$1,500</strong> covers all services through discharge, including petition preparation, court filing, and representation at the 341 Meeting of Creditors.</p>
+            <p>Payment is due in three installments of $500 each. The first installment is due upon signing. By signing this agreement you authorize Lincoln Law to begin work on your case upon receipt of the first installment.</p>
+            <p>You may terminate this agreement at any time in writing. Fees earned prior to termination are non-refundable. Lincoln Law reserves the right to withdraw from representation if payment obligations are not met.</p>
+          </div>
+          <div class="border-l-2 border-stone-300 pl-4 py-1.5">
+            <p class="text-xs text-stone-500">By tapping "Sign Agreement" you confirm that you have read and agree to the terms above and authorize Lincoln Law to represent you in your Chapter 7 bankruptcy proceedings.</p>
+          </div>
+          <div class="flex justify-end gap-3">
+            <button onclick="hideModal()" class="px-4 py-2 text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors">Cancel</button>
+            <button onclick="signRetainer()" class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="pen-tool" class="w-4 h-4"></i> Sign Agreement
+            </button>
+          </div>
+        </div>`);
+    }
+
+    function signRetainer() {
+      portalAPI('POST', '/api/portal/{clientId}/retainer/sign', { signedAt: new Date().toISOString() });
+      data.retainerAgreement.status = 'signed';
+      data.retainerAgreement.signedDate = new Date().toISOString();
+      hideModal();
+      renderPage();
+    }
+
+    renderPage();
+    initIcons();
+  </script>
+</body>
+</html>

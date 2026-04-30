@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lincoln Law — Component Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','ui-sans-serif','system-ui','sans-serif']}}}}</script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .ll-serif { font-family: "Playfair Display", Georgia, serif; }
+    .pb-safe  { padding-bottom: env(safe-area-inset-bottom); }
+    body { background: #faf9f7; }
+    /* Sticky sidebar nav */
+    #sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .section-anchor { scroll-margin-top: 32px; }
+    /* Fake focus ring for demo */
+    .demo-focus { outline: 2px solid #1e3a5c; outline-offset: 2px; }
+  </style>
+</head>
+<body class="text-stone-900 font-sans">
+<div class="flex min-h-screen">
+
+  <!-- ── Sidebar ── -->
+  <aside id="sidebar" class="hidden lg:block w-56 shrink-0 bg-[#1c1917] text-stone-300 text-[13px]">
+    <div class="p-5 border-b border-white/10">
+      <p class="text-white font-bold ll-serif text-lg leading-tight">Component<br>Library</p>
+      <p class="text-stone-500 text-xs mt-1">Lincoln Law Portal</p>
+    </div>
+    <nav class="p-3 space-y-0.5" id="nav-links"></nav>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="flex-1 min-w-0 max-w-3xl mx-auto px-6 py-10 space-y-16">
+
+    <!-- ════════════════════════════════════════ TYPOGRAPHY -->
+    <section id="s-typography" class="section-anchor">
+      <h2 class="comp-section-heading">Typography</h2>
+      <div class="space-y-3 bg-white rounded-xl border border-stone-100 shadow-sm p-6">
+        <p class="ll-serif text-3xl font-bold text-stone-900">Playfair Display — Page Heading</p>
+        <p class="ll-serif text-2xl font-bold text-stone-900">Playfair Display — Section H1</p>
+        <p class="ll-serif text-xl font-bold text-stone-900">Playfair Display — Card H2</p>
+        <p class="ll-serif text-base font-bold text-stone-900">Playfair Display — Sub-heading</p>
+        <div class="border-t border-stone-100 pt-3 space-y-1">
+          <p class="text-base font-semibold text-stone-900">Inter Semibold — Labels &amp; Nav</p>
+          <p class="text-sm font-medium text-stone-700">Inter Medium — Body copy</p>
+          <p class="text-sm font-light text-stone-500">Inter Light — Secondary / supporting text</p>
+          <p class="text-xs text-stone-400">Inter Regular — Timestamps, captions</p>
+          <p class="text-[11px] font-medium text-stone-400">11px Medium — Status badges</p>
+          <p class="text-[11px] font-semibold text-[#1e3a5c]">11px Semibold Navy — Inline links</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ BUTTONS -->
+    <section id="s-buttons" class="section-anchor">
+      <h2 class="comp-section-heading">Buttons</h2>
+
+      <div class="comp-card space-y-6">
+        <div>
+          <p class="comp-label">Primary — Dark (#1c1917)</p>
+          <div class="flex flex-wrap gap-3 mt-2">
+            <button class="bg-[#1c1917] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-stone-900 transition-all">Make a Payment</button>
+            <button class="bg-[#1c1917] text-white px-5 py-2.5 rounded-xl text-sm font-semibold w-full flex items-center justify-between hover:bg-stone-900 transition-all group max-w-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-white/10 rounded-xl flex items-center justify-center">
+                  <i data-lucide="credit-card" class="w-4 h-4 text-white"></i>
+                </div>
+                <div class="text-left">
+                  <p class="font-bold text-white text-sm">Make a Payment</p>
+                  <p class="text-stone-400 text-xs">Apply funds toward your retainer</p>
+                </div>
+              </div>
+              <i data-lucide="arrow-right" class="w-5 h-5 text-stone-500 group-hover:text-white transition-colors"></i>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label">Primary — Navy (#1e3a5c)</p>
+          <div class="flex flex-wrap gap-3 mt-2">
+            <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="send" class="w-4 h-4"></i> Send
+            </button>
+            <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="pen-tool" class="w-4 h-4"></i> Sign Agreement
+            </button>
+            <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Enable Autopay
+            </button>
+            <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="check" class="w-4 h-4"></i> Confirm
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label">Secondary — Outlined</p>
+          <div class="flex flex-wrap gap-3 mt-2">
+            <button class="flex items-center gap-2 bg-white border border-stone-200 text-stone-700 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-stone-50 hover:text-stone-900 transition-all">
+              <i data-lucide="plus" class="w-4 h-4"></i> Add Account
+            </button>
+            <button class="flex items-center gap-2 bg-white border border-stone-200 text-stone-700 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-stone-50 transition-all">
+              <i data-lucide="eye" class="w-4 h-4"></i> View Document
+            </button>
+            <button class="bg-white border border-stone-200 text-stone-700 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-stone-50 transition-all px-5">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label">Text Link</p>
+          <div class="flex flex-wrap gap-4 mt-2">
+            <button class="text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors">Cancel</button>
+            <button class="text-[11px] font-semibold text-[#1e3a5c] hover:underline">Set up autopay →</button>
+            <button class="text-[11px] font-semibold text-[#1e3a5c] hover:underline">Reschedule →</button>
+            <button class="text-[11px] font-semibold text-[#1e3a5c] hover:underline">Retry →</button>
+            <a href="#" class="text-[#1e3a5c] font-semibold text-sm hover:underline">Send it through Messages →</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label">Disabled</p>
+          <div class="flex flex-wrap gap-3 mt-2">
+            <button disabled class="bg-[#1c1917] text-white p-3 rounded-xl opacity-40 cursor-not-allowed">
+              <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+            <button disabled class="bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold opacity-40 cursor-not-allowed">Confirm</button>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label">Icon-only / Small</p>
+          <div class="flex flex-wrap gap-3 mt-2">
+            <button class="flex items-center gap-1.5 text-xs font-semibold text-[#1e3a5c] hover:text-[#152d47] bg-[#1e3a5c]/8 px-3 py-1.5 rounded-lg">
+              <i data-lucide="pencil" class="w-3.5 h-3.5"></i> New
+            </button>
+            <button class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+              <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+            </button>
+            <button class="p-2 hover:bg-stone-200 rounded-lg transition-colors">
+              <i data-lucide="x" class="w-5 h-5 text-stone-500"></i>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label">Full-width Upload CTA</p>
+          <div class="mt-2 max-w-sm space-y-2">
+            <a href="#" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-stone-800 transition-all">
+              <i data-lucide="upload-cloud" class="w-6 h-6"></i> Upload Document
+            </a>
+            <a href="#" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-stone-800 transition-all">
+              <i data-lucide="upload-cloud" class="w-6 h-6"></i> Upload Replacement
+            </a>
+            <a href="#" class="w-full bg-stone-900 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-stone-800 transition-all">
+              <i data-lucide="link-2" class="w-4 h-4"></i> Reconnect Chase Bank
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ STATUS BADGES -->
+    <section id="s-badges" class="section-anchor">
+      <h2 class="comp-section-heading">Status Badges</h2>
+      <div class="comp-card">
+        <p class="comp-label mb-3">Text-only (no background fill)</p>
+        <div class="flex flex-wrap gap-x-6 gap-y-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-[9px] text-stone-400 uppercase tracking-wider">Billing</span>
+            <span class="text-[11px] font-medium text-emerald-600">Paid</span>
+            <span class="text-[11px] font-medium text-amber-600">Upcoming</span>
+            <span class="text-[11px] font-medium text-red-600">Overdue</span>
+            <span class="text-[11px] font-medium text-red-600">Failed</span>
+            <span class="text-[11px] font-medium text-stone-400">Scheduled</span>
+          </div>
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-[9px] text-stone-400 uppercase tracking-wider">Documents</span>
+            <span class="text-[11px] font-medium text-emerald-600">Complete</span>
+            <span class="text-[11px] font-medium text-emerald-600">Submitted</span>
+            <span class="text-[11px] font-medium text-amber-600">Resubmit</span>
+            <span class="text-[11px] font-medium text-amber-600">Upload Required</span>
+          </div>
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-[9px] text-stone-400 uppercase tracking-wider">Accounts</span>
+            <span class="text-[11px] font-medium text-emerald-600">Connected</span>
+            <span class="text-[11px] font-medium text-orange-600">Disconnected</span>
+          </div>
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-[9px] text-stone-400 uppercase tracking-wider">Messages</span>
+            <span class="text-[11px] font-medium text-emerald-600">Open</span>
+            <span class="text-[11px] font-medium text-stone-400">Resolved</span>
+          </div>
+        </div>
+
+        <div class="border-t border-stone-100 mt-5 pt-5">
+          <p class="comp-label mb-3">Method badges (billing rows)</p>
+          <div class="flex gap-4">
+            <span class="text-[9px] font-semibold text-emerald-600 flex items-center gap-0.5">
+              <i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> Auto
+            </span>
+            <span class="text-[9px] font-semibold text-stone-400 flex items-center gap-0.5">
+              <i data-lucide="hand" class="w-2.5 h-2.5"></i> Manual
+            </span>
+          </div>
+        </div>
+
+        <div class="border-t border-stone-100 mt-5 pt-5">
+          <p class="comp-label mb-3">Autopay indicator (next payment card)</p>
+          <div class="flex gap-6">
+            <div class="flex items-center gap-1.5 text-emerald-700 text-xs font-semibold">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Autopay on
+            </div>
+            <div class="flex items-center gap-1.5 text-stone-500 text-xs font-semibold">
+              <i data-lucide="hand" class="w-3.5 h-3.5"></i> Manual
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-stone-100 mt-5 pt-5">
+          <p class="comp-label mb-3">Thread unread dot (sidebar / bottom nav)</p>
+          <div class="flex items-center gap-4">
+            <span class="w-2 h-2 rounded-full bg-[#1e3a5c] inline-block"></span>
+            <span class="w-4 h-4 bg-[#1e3a5c] text-white text-[8px] font-bold rounded-full flex items-center justify-center leading-none">2</span>
+            <span class="text-[9px] font-bold bg-white/20 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-4 bg-stone-400">2</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ CALLOUTS -->
+    <section id="s-callouts" class="section-anchor">
+      <h2 class="comp-section-heading">Left-Border Callouts</h2>
+      <div class="comp-card space-y-4">
+        <div>
+          <p class="comp-label mb-2">Stone — neutral info</p>
+          <div class="border-l-2 border-stone-300 pl-4 py-2">
+            <p class="text-sm text-stone-600 leading-relaxed">Your accounts are securely connected through Plaid. Lincoln Law uses read-only access to verify financial information required for your case.</p>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Amber — warning / action required</p>
+          <div class="border-l-2 border-amber-400 pl-4 py-1.5">
+            <p class="text-xs text-stone-500">A <strong class="text-stone-700">$35 fee</strong> applies to returned or failed payments.</p>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Amber — with heading</p>
+          <div class="border-l-2 border-amber-400 pl-4 py-2">
+            <p class="text-sm font-semibold text-stone-800 mb-1">1 account needs reconnection</p>
+            <p class="text-xs text-stone-500 mt-0.5">Reconnecting keeps your case documents current and avoids delays.</p>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Emerald — success / how-it-works</p>
+          <div class="border-l-2 border-emerald-400 pl-4 py-2">
+            <p class="text-sm font-semibold text-stone-800 mb-1">How autopay works</p>
+            <p class="text-sm text-stone-500 leading-relaxed">Your scheduled payments process automatically on the due date. You'll receive a reminder 3 days before each payment.</p>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Orange — disconnected account</p>
+          <div class="border-l-2 border-orange-400 pl-3 py-1.5">
+            <p class="text-xs text-stone-600 leading-relaxed">We lost connection to this account. Please reconnect so we can keep your case information up to date.</p>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Stone — reschedule info</p>
+          <div class="border-l-2 border-stone-300 pl-4 py-2">
+            <p class="text-sm font-medium text-stone-700">You have <strong>2</strong> free date changes remaining.</p>
+            <p class="text-xs text-stone-400 mt-0.5">After that, a $50 fee applies to late or failed payments.</p>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Stone — consent / disclaimer</p>
+          <div class="border-l-2 border-stone-300 pl-4 py-1.5">
+            <p class="text-xs text-stone-500">By tapping "Sign Agreement" you confirm that you have read and agree to the terms above.</p>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Firm status (homepage — no border fill)</p>
+          <div class="border-l-2 border-stone-300 pl-4 py-2.5">
+            <p class="text-sm text-stone-600 leading-relaxed">We have received all required documents and are preparing your petition. We will be in touch within 3–5 business days.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ DOCUMENT ROWS -->
+    <section id="s-documents" class="section-anchor">
+      <h2 class="comp-section-heading">Document Rows</h2>
+      <div class="comp-card">
+        <p class="comp-label mb-3">Needs Attention (pending list)</p>
+        <div class="space-y-2">
+          <!-- Not uploaded -->
+          <button class="w-full flex items-center justify-between p-4 bg-white rounded-xl border border-stone-100 border-l-4 border-l-amber-400 shadow-sm text-left hover:border-stone-200 transition-all">
+            <h3 class="font-medium text-stone-900">Driver's License</h3>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[11px] font-medium text-amber-600 hidden sm:inline">Upload Required</span>
+              <i data-lucide="upload" class="w-5 h-5 text-amber-500"></i>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-stone-200"></i>
+            </div>
+          </button>
+          <!-- Needs resubmission -->
+          <button class="w-full flex items-center justify-between p-4 bg-white rounded-xl border border-stone-100 border-l-4 border-l-amber-400 shadow-sm text-left hover:border-stone-200 transition-all">
+            <h3 class="font-medium text-stone-900">Last 6 Months of Pay Stubs</h3>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[11px] font-medium text-amber-600 hidden sm:inline">Resubmit</span>
+              <i data-lucide="alert-circle" class="w-5 h-5 text-amber-500"></i>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-stone-200"></i>
+            </div>
+          </button>
+        </div>
+
+        <div class="border-t border-stone-100 mt-5 pt-4">
+          <p class="comp-label mb-3">Submitted (collapsible toggle — closed)</p>
+          <button class="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-stone-100 bg-stone-50 hover:bg-stone-100 transition-colors text-sm font-medium text-stone-500">
+            <span class="flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+              Submitted (5)
+            </span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-stone-400"></i>
+          </button>
+        </div>
+
+        <div class="border-t border-stone-100 mt-5 pt-4">
+          <p class="comp-label mb-3">Submitted rows (inside expanded list)</p>
+          <div class="space-y-2">
+            <!-- Under review -->
+            <div class="flex items-center justify-between p-4 bg-stone-50/50 rounded-xl border border-stone-100 border-l-4 border-l-emerald-400 opacity-60">
+              <h3 class="font-medium text-stone-500">Social Security Card</h3>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[11px] font-medium text-emerald-600 hidden sm:inline">Submitted</span>
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+              </div>
+            </div>
+            <!-- Completed -->
+            <div class="flex items-center justify-between p-4 bg-stone-50/50 rounded-xl border border-stone-100 border-l-4 border-l-emerald-400 opacity-60">
+              <h3 class="font-medium text-stone-500">Bank Statements (3 Months)</h3>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[11px] font-medium text-emerald-600 hidden sm:inline">Complete</span>
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom sheet states -->
+      <div class="mt-4 space-y-4">
+        <p class="comp-label">Bottom Sheet — Not Uploaded</p>
+        <div class="bg-white rounded-t-[32px] border border-stone-100 shadow-xl p-8 space-y-4">
+          <div class="flex justify-between items-start mb-1">
+            <h2 class="text-xl font-bold text-stone-900 ll-serif leading-tight pr-8">Driver's License</h2>
+            <button class="p-2 text-stone-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+          </div>
+          <p class="text-sm text-stone-500 leading-relaxed">A valid government-issued photo ID. Accepted: driver's license, state ID, or passport.</p>
+          <a href="#" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-stone-800 transition-all">
+            <i data-lucide="upload-cloud" class="w-6 h-6"></i> Upload Document
+          </a>
+        </div>
+
+        <p class="comp-label">Bottom Sheet — Needs Resubmission</p>
+        <div class="bg-white rounded-t-[32px] border border-stone-100 shadow-xl p-8 space-y-4">
+          <div class="flex justify-between items-start">
+            <h2 class="text-xl font-bold text-stone-900 ll-serif leading-tight pr-8">Last 6 Months of Pay Stubs</h2>
+            <button class="p-2 text-stone-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+          </div>
+          <p class="text-sm text-stone-500 leading-relaxed">Pay stubs from your current employer covering the last 6 months.</p>
+          <div class="space-y-3">
+            <div class="border-l-2 border-amber-400 pl-4 py-2">
+              <p class="text-xs font-medium text-stone-500 mb-1">Rejection Reason</p>
+              <p class="text-sm text-stone-600 italic">"Document was blurry and unreadable. Please resubmit a clear scan."</p>
+            </div>
+            <a href="#" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-stone-800 transition-all">
+              <i data-lucide="upload-cloud" class="w-6 h-6"></i> Upload Replacement
+            </a>
+            <button class="w-full bg-white border border-stone-200 text-stone-700 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-stone-50 transition-all">
+              <i data-lucide="eye" class="w-5 h-5"></i> View Submitted Document
+            </button>
+          </div>
+        </div>
+
+        <p class="comp-label">Bottom Sheet — Under Review</p>
+        <div class="bg-white rounded-t-[32px] border border-stone-100 shadow-xl p-8 space-y-4">
+          <div class="flex justify-between items-start">
+            <h2 class="text-xl font-bold text-stone-900 ll-serif leading-tight pr-8">Social Security Card</h2>
+            <button class="p-2 text-stone-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+          </div>
+          <p class="text-sm text-stone-500 leading-relaxed">Your original Social Security card issued by the SSA.</p>
+          <div class="py-5 text-center border-t border-stone-100">
+            <i data-lucide="check-circle-2" class="w-10 h-10 text-emerald-400 mx-auto mb-3"></i>
+            <p class="text-stone-800 font-semibold">Submitted</p>
+            <p class="text-stone-400 text-sm mt-1 leading-relaxed">Your document is with our team. No further action needed from you.</p>
+          </div>
+          <button class="w-full bg-white border border-stone-200 text-stone-600 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-stone-50 transition-all">
+            <i data-lucide="eye" class="w-5 h-5"></i> View Document
+          </button>
+        </div>
+
+        <p class="comp-label">Bottom Sheet — Completed / Accepted</p>
+        <div class="bg-white rounded-t-[32px] border border-stone-100 shadow-xl p-8 space-y-4">
+          <div class="flex justify-between items-start">
+            <h2 class="text-xl font-bold text-stone-900 ll-serif leading-tight pr-8">Bank Statements (3 Months)</h2>
+            <button class="p-2 text-stone-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+          </div>
+          <p class="text-sm text-stone-500 leading-relaxed">Three months of complete bank statements for all accounts.</p>
+          <div class="py-5 text-center border-t border-stone-100">
+            <i data-lucide="check-circle-2" class="w-10 h-10 text-emerald-400 mx-auto mb-3"></i>
+            <p class="text-stone-800 font-semibold">Accepted</p>
+            <p class="text-stone-400 text-sm mt-1 leading-relaxed">This document has been verified and accepted.</p>
+          </div>
+          <button class="w-full bg-white border border-stone-200 text-stone-600 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-stone-50 transition-all">
+            <i data-lucide="eye" class="w-5 h-5"></i> View Document
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ INSTALLMENT ROWS -->
+    <section id="s-installments" class="section-anchor">
+      <h2 class="comp-section-heading">Installment Rows</h2>
+      <div class="comp-card p-0 overflow-hidden divide-y divide-stone-50">
+
+        <!-- Paid -->
+        <div class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-emerald-50 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-stone-900">Payment 1 of 3</p>
+              <p class="text-xs text-stone-400 mt-0.5">Paid Mar 15, 2025</p>
+            </div>
+          </div>
+          <div class="text-right space-y-1">
+            <p class="text-sm font-semibold text-stone-900">$500.00</p>
+            <span class="text-[11px] font-medium text-emerald-600">Paid</span>
+          </div>
+        </div>
+
+        <!-- Upcoming — Manual -->
+        <div class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-amber-50 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="clock" class="w-5 h-5 text-amber-500"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-stone-900">Payment 2 of 3</p>
+              <p class="text-xs text-stone-400 mt-0.5">Due May 1, 2025</p>
+            </div>
+          </div>
+          <div class="text-right space-y-1">
+            <p class="text-sm font-semibold text-stone-900">$500.00</p>
+            <div class="flex items-center justify-end gap-2">
+              <span class="text-[11px] font-medium text-amber-600">Upcoming</span>
+              <span class="text-[9px] font-semibold text-stone-400 flex items-center gap-0.5">
+                <i data-lucide="hand" class="w-2.5 h-2.5"></i> Manual
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming — Autopay -->
+        <div class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-amber-50 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="clock" class="w-5 h-5 text-amber-500"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-stone-900">Payment 2 of 3</p>
+              <p class="text-xs text-stone-400 mt-0.5">Due May 1, 2025</p>
+            </div>
+          </div>
+          <div class="text-right space-y-1">
+            <p class="text-sm font-semibold text-stone-900">$500.00</p>
+            <div class="flex items-center justify-end gap-2">
+              <span class="text-[11px] font-medium text-amber-600">Upcoming</span>
+              <span class="text-[9px] font-semibold text-emerald-600 flex items-center gap-0.5">
+                <i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> Auto
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overdue -->
+        <div class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-stone-900">Payment 2 of 3</p>
+              <p class="text-xs text-stone-400 mt-0.5">Due Apr 1, 2025</p>
+            </div>
+          </div>
+          <div class="text-right space-y-1">
+            <p class="text-sm font-semibold text-stone-900">$500.00</p>
+            <span class="text-[11px] font-medium text-red-600">Overdue</span>
+          </div>
+        </div>
+
+        <!-- Failed -->
+        <div class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-stone-900">Payment 2 of 3</p>
+              <p class="text-xs text-stone-400 mt-0.5">Failed Apr 1, 2025</p>
+            </div>
+          </div>
+          <div class="text-right space-y-1">
+            <p class="text-sm font-semibold text-stone-900">$500.00</p>
+            <div class="flex items-center justify-end gap-2">
+              <span class="text-[11px] font-medium text-red-600">Failed</span>
+              <a href="#" class="text-[11px] font-semibold text-[#1e3a5c] hover:underline">Retry →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scheduled (dimmed) -->
+        <div class="px-5 py-4 flex items-center justify-between opacity-40">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-stone-100 rounded-xl flex items-center justify-center shrink-0">
+              <i data-lucide="lock" class="w-5 h-5 text-stone-400"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-stone-900">Payment 3 of 3</p>
+              <p class="text-xs text-stone-400 mt-0.5">Due Jun 1, 2025</p>
+            </div>
+          </div>
+          <div class="text-right space-y-1">
+            <p class="text-sm font-semibold text-stone-900">$500.00</p>
+            <div class="flex items-center justify-end gap-2">
+              <span class="text-[11px] font-medium text-stone-400">Scheduled</span>
+              <span class="text-[9px] font-semibold text-stone-400 flex items-center gap-0.5">
+                <i data-lucide="hand" class="w-2.5 h-2.5"></i> Manual
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ ACCOUNT CARDS -->
+    <section id="s-accounts" class="section-anchor">
+      <h2 class="comp-section-heading">Account Cards</h2>
+      <div class="space-y-3">
+
+        <!-- Connected -->
+        <div class="bg-white rounded-xl border border-stone-100 shadow-sm overflow-hidden">
+          <div class="p-5 flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl bg-[#1e3a5c]/8 flex items-center justify-center shrink-0">
+              <i data-lucide="landmark" class="w-5 h-5 text-[#1e3a5c]"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p class="font-semibold text-stone-900 text-sm">Chase Checking ••4521</p>
+                  <p class="text-xs text-stone-400 mt-0.5">Chase Bank · Checking</p>
+                </div>
+                <span class="shrink-0 text-[11px] font-medium text-emerald-600">Connected</span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-2.5">
+                <i data-lucide="refresh-cw" class="w-3 h-3 text-stone-300"></i>
+                <span class="text-[11px] text-stone-400">Synced 2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disconnected -->
+        <div class="bg-white rounded-xl border border-orange-200 shadow-sm overflow-hidden">
+          <div class="p-5 flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+              <i data-lucide="credit-card" class="w-5 h-5 text-orange-400"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p class="font-semibold text-stone-900 text-sm">Wells Fargo Visa ••8834</p>
+                  <p class="text-xs text-stone-400 mt-0.5">Wells Fargo · Credit Card</p>
+                </div>
+                <span class="shrink-0 text-[11px] font-medium text-orange-600">Disconnected</span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-2.5">
+                <i data-lucide="wifi-off" class="w-3 h-3 text-orange-400"></i>
+                <span class="text-[11px] text-orange-500">Lost connection 3 days ago</span>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-4">
+            <div class="border-l-2 border-orange-400 pl-3 py-1.5">
+              <p class="text-xs text-stone-600 leading-relaxed">We lost connection to this account. Please reconnect so we can keep your case information up to date.</p>
+            </div>
+            <a href="#" class="mt-3 w-full flex items-center justify-center gap-2 bg-stone-900 text-white py-3 rounded-xl text-sm font-semibold hover:bg-stone-800 transition-all">
+              <i data-lucide="link-2" class="w-4 h-4"></i> Reconnect Wells Fargo
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ INFO CARDS -->
+    <section id="s-infocards" class="section-anchor">
+      <h2 class="comp-section-heading">Info Cards (Homepage)</h2>
+      <div class="space-y-3">
+
+        <!-- Case Filed -->
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-stone-100">
+          <div class="flex items-start gap-3">
+            <i data-lucide="shield" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-stone-900 text-sm">Case Filed</p>
+              <p class="text-xs text-stone-500 mt-0.5">Case No. 25-B-11234 · Filed Apr 20</p>
+              <p class="text-xs text-emerald-600 font-medium mt-1.5">Automatic stay in effect — all creditor contact is prohibited</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 341 Meeting -->
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-stone-100">
+          <div class="flex items-start gap-3">
+            <i data-lucide="calendar" class="w-5 h-5 text-[#1e3a5c] shrink-0 mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-stone-900 text-sm">341 Meeting Scheduled</p>
+              <p class="text-xs text-stone-500 mt-0.5">Apr 30 · Dirksen Federal Building, Room 4B</p>
+              <p class="text-xs text-stone-400 font-light mt-1">Bring photo ID and your Social Security card to the meeting.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discharge Granted -->
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-emerald-100">
+          <div class="flex items-start gap-3">
+            <i data-lucide="party-popper" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-stone-900 text-sm">Discharge Granted</p>
+              <p class="text-xs text-stone-500 mt-0.5">Granted Apr 21</p>
+              <p class="text-xs text-stone-400 font-light mt-1">Your eligible debts have been legally eliminated.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ RETAINER + PAID IN FULL -->
+    <section id="s-retainer" class="section-anchor">
+      <h2 class="comp-section-heading">Retainer Agreement Card</h2>
+      <div class="space-y-4">
+
+        <!-- Pending signature -->
+        <div>
+          <p class="comp-label mb-2">Pending Signature</p>
+          <div class="bg-white rounded-xl border border-amber-200 shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-stone-100">
+              <h2 class="text-base font-bold text-stone-900 ll-serif">Retainer Agreement</h2>
+            </div>
+            <div class="p-5 space-y-4">
+              <p class="text-sm text-stone-500 leading-relaxed">Please review and sign your retainer agreement before we can begin work on your case.</p>
+              <button class="w-full bg-[#1c1917] text-white rounded-xl p-4 flex items-center justify-between hover:bg-stone-900 transition-all group">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
+                    <i data-lucide="file-text" class="w-5 h-5 text-white"></i>
+                  </div>
+                  <div class="text-left">
+                    <p class="font-bold text-white text-sm">Sign Retainer Agreement</p>
+                    <p class="text-stone-400 text-xs mt-0.5">Review and digitally sign</p>
+                  </div>
+                </div>
+                <i data-lucide="arrow-right" class="w-5 h-5 text-stone-500 group-hover:text-white transition-colors"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paid in Full card -->
+        <div>
+          <p class="comp-label mb-2">Paid in Full</p>
+          <div class="bg-white rounded-xl border border-emerald-200 shadow-sm overflow-hidden">
+            <div class="p-5 flex items-center gap-4">
+              <div class="w-11 h-11 bg-emerald-50 rounded-xl flex items-center justify-center shrink-0">
+                <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-500"></i>
+              </div>
+              <div>
+                <p class="font-bold text-stone-900">Paid in Full</p>
+                <p class="text-sm text-stone-400 mt-0.5">Your balance has been settled — thank you.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ NEXT PAYMENT CARD -->
+    <section id="s-nextpayment" class="section-anchor">
+      <h2 class="comp-section-heading">Next Payment Card</h2>
+      <div class="space-y-4">
+
+        <!-- Normal — Manual -->
+        <div>
+          <p class="comp-label mb-2">Normal — Manual payment, reschedule available</p>
+          <div class="bg-white rounded-xl border border-stone-100 shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-stone-100">
+              <h2 class="text-base font-bold text-stone-900 ll-serif">Next Payment</h2>
+            </div>
+            <div class="p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-3xl font-bold text-stone-900 tracking-tight">$500.00</p>
+                  <p class="text-sm mt-1 text-stone-500">Due May 1, 2025</p>
+                  <p class="text-xs text-stone-400 mt-0.5">Payment 2 of 3</p>
+                </div>
+                <div class="flex flex-col items-end gap-2 shrink-0">
+                  <div class="flex items-center gap-1.5 text-stone-500 text-xs font-semibold">
+                    <i data-lucide="hand" class="w-3.5 h-3.5"></i> Manual
+                  </div>
+                  <button class="text-[11px] font-semibold text-[#1e3a5c] hover:underline">Set up autopay →</button>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-stone-50 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2 text-xs text-stone-400">
+                  <i data-lucide="calendar-clock" class="w-3.5 h-3.5 shrink-0"></i>
+                  2 free date changes remaining
+                </div>
+                <button class="text-xs font-semibold text-[#1e3a5c] hover:underline shrink-0">Reschedule →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Normal — Autopay on -->
+        <div>
+          <p class="comp-label mb-2">Autopay on — no reschedule changes left</p>
+          <div class="bg-white rounded-xl border border-stone-100 shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-stone-100">
+              <h2 class="text-base font-bold text-stone-900 ll-serif">Next Payment</h2>
+            </div>
+            <div class="p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-3xl font-bold text-stone-900 tracking-tight">$500.00</p>
+                  <p class="text-sm mt-1 text-stone-500">Due May 1, 2025</p>
+                  <p class="text-xs text-stone-400 mt-0.5">Payment 2 of 3</p>
+                </div>
+                <div class="flex flex-col items-end gap-2 shrink-0">
+                  <div class="flex items-center gap-1.5 text-emerald-700 text-xs font-semibold">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Autopay on
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-stone-50 flex items-center gap-1.5 text-xs text-stone-400">
+                <i data-lucide="info" class="w-3.5 h-3.5 shrink-0"></i>
+                No free changes remaining —
+                <a href="#" class="text-[#1e3a5c] font-semibold hover:underline">message us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overdue -->
+        <div>
+          <p class="comp-label mb-2">Overdue</p>
+          <div class="bg-white rounded-xl border border-red-200 shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-stone-100">
+              <h2 class="text-base font-bold text-stone-900 ll-serif">Next Payment</h2>
+            </div>
+            <div class="p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-3xl font-bold text-stone-900 tracking-tight">$500.00</p>
+                  <p class="text-sm mt-1 text-red-500 font-semibold">Overdue · Apr 1, 2025</p>
+                  <p class="text-xs text-stone-400 mt-0.5">Payment 2 of 3</p>
+                </div>
+                <div class="flex flex-col items-end gap-2 shrink-0">
+                  <div class="flex items-center gap-1.5 text-stone-500 text-xs font-semibold">
+                    <i data-lucide="hand" class="w-3.5 h-3.5"></i> Manual
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ ACTION REQUIRED ITEMS -->
+    <section id="s-actionitems" class="section-anchor">
+      <h2 class="comp-section-heading">Action Required Items</h2>
+      <div class="bg-white rounded-xl border border-stone-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-stone-100">
+          <h2 class="text-xl font-bold text-stone-900 ll-serif">Action Required</h2>
+        </div>
+        <div>
+          <!-- Urgent -->
+          <a href="#" class="flex items-start gap-4 px-5 py-4 border-b border-stone-50 hover:bg-stone-50/60 transition-colors group">
+            <div class="w-0.5 self-stretch rounded-full shrink-0 bg-amber-400"></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-sm font-medium text-stone-900 leading-snug">Reconnect Wells Fargo Visa</p>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-stone-300 group-hover:text-stone-500 transition-colors shrink-0 mt-0.5"></i>
+              </div>
+              <p class="text-xs text-stone-400 font-light mt-0.5 leading-relaxed">Resubmission needed — document was blurry and unreadable</p>
+              <p class="text-xs text-stone-400 font-light mt-1.5">Due Apr 25</p>
+            </div>
+          </a>
+          <!-- Normal with description -->
+          <a href="#" class="flex items-start gap-4 px-5 py-4 border-b border-stone-50 hover:bg-stone-50/60 transition-colors group">
+            <div class="w-0.5 self-stretch rounded-full shrink-0 bg-stone-200"></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-sm font-medium text-stone-900 leading-snug">Upload Pay Stubs</p>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-stone-300 group-hover:text-stone-500 transition-colors shrink-0 mt-0.5"></i>
+              </div>
+              <p class="text-xs text-stone-400 font-light mt-0.5 leading-relaxed">Document upload required</p>
+            </div>
+          </a>
+          <!-- Normal no description -->
+          <a href="#" class="flex items-start gap-4 px-5 py-4 border-b border-stone-50 hover:bg-stone-50/60 transition-colors group">
+            <div class="w-0.5 self-stretch rounded-full shrink-0 bg-stone-200"></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-sm font-medium text-stone-900 leading-snug">Review and confirm your information</p>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-stone-300 group-hover:text-stone-500 transition-colors shrink-0 mt-0.5"></i>
+              </div>
+            </div>
+          </a>
+          <!-- Empty state -->
+          <p class="text-sm text-stone-400 py-10 text-center">No pending items.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ FEE SUMMARY -->
+    <section id="s-feesummary" class="section-anchor">
+      <h2 class="comp-section-heading">Fee Summary Grid + Progress Bar</h2>
+      <div class="space-y-2">
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-white rounded-xl p-4 border border-stone-100 shadow-sm text-center">
+            <p class="text-xs font-medium text-stone-400 mb-1.5">Total</p>
+            <p class="text-xl font-bold text-stone-900">$1,500</p>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-stone-100 shadow-sm text-center">
+            <p class="text-xs font-medium text-stone-400 mb-1.5">Paid</p>
+            <p class="text-xl font-bold text-emerald-600">$500</p>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-stone-100 shadow-sm text-center">
+            <p class="text-xs font-medium text-stone-400 mb-1.5">Remaining</p>
+            <p class="text-xl font-bold text-stone-600">$1,000</p>
+          </div>
+        </div>
+        <!-- 33% progress -->
+        <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+          <div class="h-full bg-emerald-400 rounded-full w-1/3"></div>
+        </div>
+        <!-- 100% progress -->
+        <div class="mt-3">
+          <p class="comp-label mb-1">100% (paid in full)</p>
+          <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-400 rounded-full w-full"></div>
+          </div>
+        </div>
+        <!-- 0% progress -->
+        <div class="mt-2">
+          <p class="comp-label mb-1">0% (new client)</p>
+          <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-400 rounded-full w-0"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ STAGE PROGRESS -->
+    <section id="s-stageprogress" class="section-anchor">
+      <h2 class="comp-section-heading">Stage Progress Dots</h2>
+      <div class="comp-card space-y-8">
+
+        <!-- Getting Started current -->
+        <div>
+          <p class="comp-label mb-4">Getting Started (current)</p>
+          <div class="relative px-2">
+            <div class="absolute top-5 left-0 right-0 h-0.5 bg-stone-100 -translate-y-1/2 rounded-full hidden sm:block mx-6"></div>
+            <div class="absolute top-5 left-0 h-0.5 bg-emerald-500 -translate-y-1/2 rounded-full hidden sm:block mx-6 w-0"></div>
+            <div class="flex flex-col sm:flex-row justify-between relative z-10 gap-6 sm:gap-0">
+              <!-- Getting Started (current) -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-stone-900 text-stone-900 scale-110 rounded-full shadow-sm mt-1">
+                  <i data-lucide="circle" class="w-2.5 h-2.5 fill-stone-900"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-900">Getting Started</p>
+              </div>
+              <!-- Building Your Case (upcoming) -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-stone-200 text-stone-300 rounded-full shadow-sm mt-1">
+                  <i data-lucide="circle" class="w-2.5 h-2.5 fill-stone-300"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-400">Building Your Case</p>
+              </div>
+              <!-- Protected (upcoming) -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-10 h-10 border-[3px] border-stone-200 text-stone-300 rounded-full shadow-sm">
+                  <i data-lucide="shield" class="w-4 h-4 fill-stone-200"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-400">Protected</p>
+              </div>
+              <!-- Fresh Start (upcoming) -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-stone-200 text-stone-300 rounded-full shadow-sm mt-1">
+                  <i data-lucide="party-popper" class="w-3.5 h-3.5 text-stone-300"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-400">Fresh Start</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Building Your Case current (1 done, 1 current, 2 upcoming) -->
+        <div>
+          <p class="comp-label mb-4">Building Your Case (current)</p>
+          <div class="relative px-2">
+            <div class="absolute top-5 left-0 right-0 h-0.5 bg-stone-100 -translate-y-1/2 rounded-full hidden sm:block mx-6"></div>
+            <div class="absolute top-5 left-0 h-0.5 bg-emerald-500 -translate-y-1/2 rounded-full hidden sm:block mx-6" style="width:calc(33% - 1rem)"></div>
+            <div class="flex flex-col sm:flex-row justify-between relative z-10 gap-6 sm:gap-0">
+              <!-- Done -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-emerald-500 text-emerald-500 rounded-full shadow-sm mt-1">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 fill-emerald-500 text-white"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-700">Getting Started</p>
+              </div>
+              <!-- Current -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-stone-900 text-stone-900 scale-110 rounded-full shadow-sm mt-1">
+                  <i data-lucide="circle" class="w-2.5 h-2.5 fill-stone-900"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-900">Building Your Case</p>
+              </div>
+              <!-- Protected upcoming -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-10 h-10 border-[3px] border-stone-200 rounded-full shadow-sm">
+                  <i data-lucide="shield" class="w-4 h-4 fill-stone-200"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-400">Protected</p>
+              </div>
+              <!-- Fresh Start upcoming -->
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="relative flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-stone-200 rounded-full shadow-sm mt-1">
+                  <i data-lucide="party-popper" class="w-3.5 h-3.5 text-stone-300"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-400">Fresh Start</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Protected current (shield, current) -->
+        <div>
+          <p class="comp-label mb-4">Protected (current)</p>
+          <div class="relative px-2">
+            <div class="absolute top-5 left-0 right-0 h-0.5 bg-stone-100 -translate-y-1/2 rounded-full hidden sm:block mx-6"></div>
+            <div class="absolute top-5 left-0 h-0.5 bg-emerald-500 -translate-y-1/2 rounded-full hidden sm:block mx-6" style="width:calc(66% - 1rem)"></div>
+            <div class="flex flex-col sm:flex-row justify-between relative z-10 gap-6 sm:gap-0">
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-emerald-500 rounded-full shadow-sm mt-1">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 fill-emerald-500 text-white"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-700">Getting Started</p>
+              </div>
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-emerald-500 rounded-full shadow-sm mt-1">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 fill-emerald-500 text-white"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-700">Building Your Case</p>
+              </div>
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-10 h-10 border-[3px] border-stone-900 rounded-full shadow-sm scale-110">
+                  <i data-lucide="shield" class="w-4 h-4 fill-stone-900"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-900">Protected</p>
+              </div>
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-stone-200 rounded-full shadow-sm mt-1">
+                  <i data-lucide="party-popper" class="w-3.5 h-3.5 text-stone-300"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-400">Fresh Start</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fresh Start (done) -->
+        <div>
+          <p class="comp-label mb-4">Fresh Start (current)</p>
+          <div class="relative px-2">
+            <div class="absolute top-5 left-0 right-0 h-0.5 bg-stone-100 -translate-y-1/2 rounded-full hidden sm:block mx-6"></div>
+            <div class="absolute top-5 left-0 h-0.5 bg-emerald-500 -translate-y-1/2 rounded-full hidden sm:block mx-6" style="width:calc(100% - 3rem)"></div>
+            <div class="flex flex-col sm:flex-row justify-between relative z-10 gap-6 sm:gap-0">
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-emerald-500 rounded-full shadow-sm mt-1">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 fill-emerald-500 text-white"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-700">Getting Started</p>
+              </div>
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-emerald-500 rounded-full shadow-sm mt-1">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 fill-emerald-500 text-white"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-700">Building Your Case</p>
+              </div>
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-10 h-10 border-[3px] border-emerald-500 rounded-full shadow-sm">
+                  <i data-lucide="shield" class="w-4 h-4 fill-emerald-500"></i>
+                </div>
+                <p class="text-sm font-bold text-stone-700">Protected</p>
+              </div>
+              <div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+                <div class="flex items-center justify-center shrink-0 bg-white w-8 h-8 border-2 border-stone-900 rounded-full shadow-sm scale-110 mt-1">
+                  <i data-lucide="party-popper" class="w-3.5 h-3.5 text-emerald-600"></i>
+                </div>
+                <p class="text-sm font-bold text-emerald-600">Fresh Start</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ MESSAGE BUBBLES -->
+    <section id="s-messages" class="section-anchor">
+      <h2 class="comp-section-heading">Message Bubbles</h2>
+      <div class="comp-card bg-stone-50/30 space-y-1 p-4">
+
+        <!-- Intro (collapsible) -->
+        <details class="group mb-4 mt-1">
+          <summary class="flex items-center gap-2 text-xs text-stone-400 hover:text-stone-600 cursor-pointer list-none select-none py-1">
+            <i data-lucide="info" class="w-3.5 h-3.5 shrink-0 text-[#1e3a5c]"></i>
+            <span class="flex-1">About your conversations with Andrew Curtis</span>
+            <svg class="w-3 h-3 text-stone-300 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="mt-2 bg-stone-50 border border-stone-100 rounded-xl px-4 py-3 text-xs text-stone-600 leading-relaxed">
+            Messages are monitored by our team and typically responded to within 1–2 business days. For urgent matters, please call our office directly.
+          </div>
+        </details>
+
+        <!-- Staff message -->
+        <div class="flex flex-col items-start mb-1">
+          <p class="text-[10px] font-semibold text-stone-400 mb-1 px-1">Andrew Curtis</p>
+          <div class="max-w-[80%] px-4 py-2.5 shadow-sm text-sm leading-snug bg-white border border-stone-200 text-stone-900 rounded-2xl rounded-tl-sm">
+            <p>Hi Sarah, your message has been received. We'll follow up within 1–2 business days.</p>
+          </div>
+          <p class="text-[10px] text-stone-300 mt-1 px-1">2:30 PM</p>
+        </div>
+
+        <!-- Client message -->
+        <div class="flex flex-col items-end mb-1">
+          <div class="max-w-[80%] px-4 py-2.5 shadow-sm text-sm leading-snug bg-[#1e3a5c] text-white rounded-2xl rounded-tr-sm">
+            <p>When will my documents be reviewed?</p>
+          </div>
+          <p class="text-[10px] text-stone-300 mt-1 px-1 text-right">2:45 PM</p>
+        </div>
+
+        <!-- Another staff message -->
+        <div class="flex flex-col items-start mb-1">
+          <p class="text-[10px] font-semibold text-stone-400 mb-1 px-1">Andrew Curtis</p>
+          <div class="max-w-[80%] px-4 py-2.5 shadow-sm text-sm leading-snug bg-white border border-stone-200 text-stone-900 rounded-2xl rounded-tl-sm">
+            <p>Your documents are currently under review. We expect to complete the review within 3–5 business days.</p>
+          </div>
+          <p class="text-[10px] text-stone-300 mt-1 px-1">Mar 15</p>
+        </div>
+
+        <!-- Resolution chip -->
+        <div class="flex justify-center my-3">
+          <div class="bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-medium px-4 py-2 rounded-full flex items-center gap-2">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+            This issue has been resolved.
+          </div>
+        </div>
+
+        <!-- Resolved footer -->
+        <div class="flex justify-center mt-4">
+          <p class="text-[11px] text-stone-400 bg-white border border-stone-100 px-3 py-1.5 rounded-full">This conversation has been resolved</p>
+        </div>
+      </div>
+
+      <!-- Thread list -->
+      <div class="mt-4">
+        <p class="comp-label mb-3">Thread List Items</p>
+        <div class="bg-white rounded-xl border border-stone-100 shadow-sm overflow-hidden">
+          <!-- Active + open -->
+          <button class="w-full text-left px-4 py-4 border-b border-stone-100 bg-[#1e3a5c]/5 border-l-2 border-l-[#1e3a5c]">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <p class="text-sm font-semibold text-stone-900 truncate flex-1">Question about my 341 Meeting</p>
+              <span class="text-[10px] text-stone-400 whitespace-nowrap shrink-0">2:30 PM</span>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <p class="text-xs text-stone-400 truncate flex-1">When will my documents be reviewed?</p>
+              <span class="shrink-0 w-2 h-2 rounded-full bg-[#1e3a5c]"></span>
+            </div>
+          </button>
+          <!-- Inactive + open -->
+          <button class="w-full text-left px-4 py-4 border-b border-stone-100 hover:bg-stone-50 transition-colors">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <p class="text-sm font-semibold text-stone-900 truncate flex-1">Pay stub resubmission</p>
+              <span class="text-[10px] text-stone-400 whitespace-nowrap shrink-0">Mar 15</span>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <p class="text-xs text-stone-400 truncate flex-1">Your document is being reviewed by our team.</p>
+              <span class="shrink-0 w-2 h-2 rounded-full bg-[#1e3a5c]"></span>
+            </div>
+          </button>
+          <!-- Resolved -->
+          <button class="w-full text-left px-4 py-4 hover:bg-stone-50 transition-colors">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <p class="text-sm font-semibold text-stone-400 truncate flex-1">General question about timeline</p>
+              <span class="text-[10px] text-stone-400 whitespace-nowrap shrink-0">Feb 3</span>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <p class="text-xs text-stone-400 truncate flex-1">Your case is progressing well.</p>
+              <span class="shrink-0 text-[11px] font-medium text-stone-400">Resolved</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ FORM INPUTS -->
+    <section id="s-inputs" class="section-anchor">
+      <h2 class="comp-section-heading">Form Inputs</h2>
+      <div class="comp-card space-y-5">
+
+        <div>
+          <p class="comp-label mb-2">Text input — normal</p>
+          <input type="text" placeholder="What do you need help with?" class="w-full px-4 py-3 rounded-md border border-stone-200 focus:outline-none focus:ring-1 focus:ring-stone-400 bg-stone-50/50 focus:bg-white transition-all text-sm">
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Text input — focused (simulated)</p>
+          <input type="text" value="Question about my 341 meeting" class="w-full px-4 py-3 rounded-md border border-[#1e3a5c] focus:outline-none ring-2 ring-[#1e3a5c]/20 bg-white text-sm">
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Number input — with $ prefix</p>
+          <div class="relative max-w-xs">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 font-medium text-sm">$</span>
+            <input type="number" value="500" class="w-full pl-8 pr-4 py-3 rounded-md border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#1e3a5c]/20 focus:border-[#1e3a5c] text-sm font-semibold">
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Date input</p>
+          <input type="date" class="w-full px-4 py-3 rounded-md border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#1e3a5c]/20 focus:border-[#1e3a5c] text-sm max-w-xs">
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Textarea</p>
+          <textarea placeholder="What do you need help with?" class="w-full h-28 px-4 py-3 rounded-md border border-stone-200 focus:outline-none focus:ring-1 focus:ring-stone-400 text-sm resize-none"></textarea>
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Payment preset buttons</p>
+          <div class="grid grid-cols-2 gap-2 max-w-sm">
+            <button class="py-3.5 rounded-xl border-2 border-[#1e3a5c] bg-[#1e3a5c]/5 transition-all text-center">
+              <span class="block text-xs font-semibold text-stone-500 mb-0.5">Suggested</span>
+              <span class="text-lg font-bold text-stone-900">$500.00</span>
+            </button>
+            <button class="py-3.5 rounded-xl border-2 border-stone-200 hover:border-stone-300 transition-all text-center">
+              <span class="block text-xs font-semibold text-stone-500 mb-0.5">Pay in Full</span>
+              <span class="text-lg font-bold text-stone-900">$1,000.00</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ MODALS -->
+    <section id="s-modals" class="section-anchor">
+      <h2 class="comp-section-heading">Modals (static)</h2>
+      <div class="space-y-6">
+
+        <!-- Payment modal -->
+        <div>
+          <p class="comp-label mb-2">Make a Payment</p>
+          <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-stone-100">
+            <div class="px-5 py-4 border-b border-stone-100 flex items-center justify-between">
+              <h3 class="font-bold text-stone-900 text-lg">Make a Payment</h3>
+              <button class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+              </button>
+            </div>
+            <div class="p-5 space-y-4">
+              <div>
+                <p class="text-xs font-medium text-stone-500 mb-3">Select Amount</p>
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                  <button class="py-3.5 rounded-xl border-2 border-[#1e3a5c] bg-[#1e3a5c]/5 text-center">
+                    <span class="block text-xs font-semibold text-stone-500 mb-0.5">Suggested</span>
+                    <span class="text-lg font-bold text-stone-900">$500.00</span>
+                  </button>
+                  <button class="py-3.5 rounded-xl border-2 border-stone-200 text-center">
+                    <span class="block text-xs font-semibold text-stone-500 mb-0.5">Pay in Full</span>
+                    <span class="text-lg font-bold text-stone-900">$1,000.00</span>
+                  </button>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-stone-500 block mb-2">Custom Amount</label>
+                  <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 font-medium text-sm">$</span>
+                    <input type="number" value="500" class="w-full pl-8 pr-4 py-3 rounded-md border border-stone-200 focus:outline-none text-sm font-semibold">
+                  </div>
+                </div>
+              </div>
+              <div class="border-l-2 border-amber-400 pl-4 py-1.5">
+                <p class="text-xs text-stone-500">A <strong class="text-stone-700">$35 fee</strong> applies to returned or failed payments.</p>
+              </div>
+              <button class="block w-full bg-[#1c1917] text-white py-4 rounded-xl font-bold text-center hover:bg-stone-900 transition-colors">
+                Pay $500.00 Now
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reschedule modal -->
+        <div>
+          <p class="comp-label mb-2">Reschedule Payment</p>
+          <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-stone-100">
+            <div class="px-6 py-5 border-b border-stone-100 flex items-center justify-between">
+              <h3 class="font-bold text-stone-900">Reschedule Payment</h3>
+              <button class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+              </button>
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="border-l-2 border-stone-300 pl-4 py-2">
+                <p class="text-sm font-medium text-stone-700">You have <strong>2</strong> free date changes remaining.</p>
+                <p class="text-xs text-stone-400 mt-0.5">After that, a $50 fee applies to late or failed payments.</p>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-stone-500 block mb-2">New Due Date</label>
+                <input type="date" class="w-full px-4 py-3 rounded-md border border-stone-200 focus:outline-none text-sm">
+              </div>
+              <div class="flex justify-end gap-3">
+                <button class="px-4 py-2 text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors">Cancel</button>
+                <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+                  <i data-lucide="check" class="w-4 h-4"></i> Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Autopay modal -->
+        <div>
+          <p class="comp-label mb-2">Set Up Autopay</p>
+          <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-stone-100">
+            <div class="px-6 py-5 border-b border-stone-100 flex items-center justify-between">
+              <h3 class="font-bold text-stone-900">Set Up Autopay</h3>
+              <button class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+              </button>
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="border-l-2 border-emerald-400 pl-4 py-2">
+                <p class="text-sm font-semibold text-stone-800 mb-1">How autopay works</p>
+                <p class="text-sm text-stone-500 leading-relaxed">Your scheduled payments process automatically on the due date. You'll receive a reminder 3 days before each payment.</p>
+              </div>
+              <div class="flex justify-end gap-3">
+                <button class="px-4 py-2 text-sm font-medium text-stone-500 hover:text-stone-900">Not Now</button>
+                <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold">
+                  <i data-lucide="refresh-cw" class="w-4 h-4"></i> Enable Autopay
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Retainer modal -->
+        <div>
+          <p class="comp-label mb-2">Retainer Agreement Modal</p>
+          <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-stone-100">
+            <div class="px-5 py-4 border-b border-stone-100 flex items-center justify-between">
+              <h3 class="font-bold text-stone-900 text-lg ll-serif">Retainer Agreement</h3>
+              <button class="p-2 hover:bg-stone-100 rounded-xl transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-stone-400"></i>
+              </button>
+            </div>
+            <div class="p-5 space-y-4">
+              <div class="bg-stone-50 rounded-xl p-4 space-y-3 text-sm text-stone-600 leading-relaxed border border-stone-100 max-h-48 overflow-y-auto">
+                <p class="font-semibold text-stone-900">Lincoln Law Office<br><span class="font-normal text-stone-500">Chapter 7 Bankruptcy Retainer Agreement</span></p>
+                <p>This agreement confirms that you have retained Lincoln Law to represent you in your Chapter 7 bankruptcy case. Our flat fee of <strong class="text-stone-800">$1,500</strong> covers all services through discharge, including petition preparation, court filing, and representation at the 341 Meeting of Creditors.</p>
+                <p>Payment is due in three installments of $500 each. The first installment is due upon signing.</p>
+              </div>
+              <div class="border-l-2 border-stone-300 pl-4 py-1.5">
+                <p class="text-xs text-stone-500">By tapping "Sign Agreement" you confirm that you have read and agree to the terms above.</p>
+              </div>
+              <div class="flex justify-end gap-3">
+                <button class="px-4 py-2 text-sm font-medium text-stone-500 hover:text-stone-900">Cancel</button>
+                <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold">
+                  <i data-lucide="pen-tool" class="w-4 h-4"></i> Sign Agreement
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Duplicate payment warning modal -->
+        <div>
+          <p class="comp-label mb-2">Autopay Active — Duplicate Warning</p>
+          <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-stone-100">
+            <div class="p-6 pb-2 text-center">
+              <div class="w-14 h-14 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="alert-triangle" class="w-7 h-7 text-amber-500"></i>
+              </div>
+              <h3 class="text-lg font-bold text-stone-900 mb-2">Autopay Is Active</h3>
+              <p class="text-sm text-stone-500 leading-relaxed">
+                You have an automatic payment of <strong>$500.00</strong> scheduled for
+                <strong>May 1, 2025</strong>.
+                Making a payment now would be in addition to that scheduled amount.
+              </p>
+            </div>
+            <div class="p-6 pt-4 space-y-3">
+              <button class="w-full bg-stone-900 text-white py-3.5 rounded-xl font-bold text-center hover:bg-stone-800 transition-colors">
+                Make an Additional Payment
+              </button>
+              <button class="w-full bg-white border border-stone-200 text-stone-700 py-3.5 rounded-xl font-bold text-center hover:bg-stone-50 transition-colors">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Message modal -->
+        <div>
+          <p class="comp-label mb-2">New Message</p>
+          <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-stone-100">
+            <div class="px-6 py-4 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
+              <h3 class="font-bold text-stone-900">New Message</h3>
+              <button class="p-2 hover:bg-stone-200 rounded-lg transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-stone-500"></i>
+              </button>
+            </div>
+            <div class="p-6 space-y-4">
+              <textarea placeholder="What do you need help with?" class="w-full h-36 px-4 py-3 rounded-md border border-stone-200 focus:outline-none focus:ring-1 focus:ring-stone-400 text-sm resize-none"></textarea>
+              <div class="flex justify-end gap-3">
+                <button class="px-4 py-2 text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">Cancel</button>
+                <button class="flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+                  <i data-lucide="send" class="w-4 h-4"></i> Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ EMPTY STATES -->
+    <section id="s-empty" class="section-anchor">
+      <h2 class="comp-section-heading">Empty States</h2>
+      <div class="space-y-4">
+
+        <!-- No accounts -->
+        <div>
+          <p class="comp-label mb-2">No Accounts Connected</p>
+          <div class="flex flex-col items-center justify-center py-12 text-center gap-3 bg-stone-50 rounded-xl border border-stone-100">
+            <i data-lucide="link-2" class="w-10 h-10 text-stone-200"></i>
+            <p class="font-medium text-stone-600 text-sm">No accounts connected</p>
+            <p class="text-xs text-stone-400 font-light max-w-xs leading-relaxed">Connect your bank accounts through Plaid so we can verify your financial information for the case.</p>
+            <a href="#" class="mt-1 flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+              <i data-lucide="plus" class="w-4 h-4"></i> Connect an Account
+            </a>
+          </div>
+        </div>
+
+        <!-- No messages -->
+        <div>
+          <p class="comp-label mb-2">No Messages</p>
+          <div class="flex flex-col items-center justify-center h-48 text-stone-400 text-sm gap-2 p-8 text-center bg-stone-50 rounded-xl border border-stone-100">
+            <i data-lucide="message-circle" class="w-10 h-10 opacity-30"></i>
+            <p>No messages yet</p>
+          </div>
+        </div>
+
+        <!-- No thread selected -->
+        <div>
+          <p class="comp-label mb-2">No Thread Selected (messages pane)</p>
+          <div class="flex flex-col items-center justify-center h-48 text-stone-400 gap-3 p-8 bg-stone-50 rounded-xl border border-stone-100">
+            <i data-lucide="message-square" class="w-12 h-12 opacity-20"></i>
+            <p class="text-sm">Select a conversation</p>
+            <button class="text-sm font-semibold text-[#1e3a5c] hover:underline mt-1">Start a new message</button>
+          </div>
+        </div>
+
+        <!-- No pending items -->
+        <div>
+          <p class="comp-label mb-2">No Action Items</p>
+          <div class="bg-white rounded-xl border border-stone-100 shadow-sm">
+            <p class="text-sm text-stone-400 py-10 text-center">No pending items.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ LAYOUT CHROME -->
+    <section id="s-layout" class="section-anchor">
+      <h2 class="comp-section-heading">Layout Chrome</h2>
+      <div class="space-y-6">
+
+        <!-- Sidebar snippet -->
+        <div>
+          <p class="comp-label mb-2">Desktop Sidebar</p>
+          <div class="bg-[#1c1917] rounded-xl overflow-hidden w-64">
+            <div class="p-6 border-b border-white/10">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                  <i data-lucide="scale" class="w-4 h-4 text-stone-800"></i>
+                </div>
+                <h1 class="text-xl font-bold tracking-tight text-white ll-serif">Lincoln Law</h1>
+              </div>
+            </div>
+            <nav class="p-4 space-y-1">
+              <!-- Active -->
+              <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-white/10 text-white">
+                <i data-lucide="home" class="w-5 h-5 shrink-0 text-white"></i>
+                <span class="flex-1">Dashboard</span>
+              </a>
+              <!-- Inactive -->
+              <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-stone-400 hover:bg-white/5 hover:text-stone-200">
+                <i data-lucide="file-text" class="w-5 h-5 shrink-0 text-stone-500"></i>
+                <span class="flex-1">Documents</span>
+              </a>
+              <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-stone-400 hover:bg-white/5 hover:text-stone-200">
+                <i data-lucide="message-square" class="w-5 h-5 shrink-0 text-stone-500"></i>
+                <span class="flex-1">Messages</span>
+                <span class="text-[9px] font-bold bg-white/20 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-4">2</span>
+              </a>
+              <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-stone-400 hover:bg-white/5 hover:text-stone-200">
+                <i data-lucide="credit-card" class="w-5 h-5 shrink-0 text-stone-500"></i>
+                <span class="flex-1">Billing</span>
+              </a>
+            </nav>
+            <!-- User menu -->
+            <div class="p-4 border-t border-white/10">
+              <button class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-left group">
+                <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                  <i data-lucide="user" class="w-4 h-4 text-stone-300"></i>
+                </div>
+                <span class="text-sm font-medium text-stone-200 flex-1 truncate">Sarah Johnson</span>
+                <i data-lucide="chevron-up" class="w-4 h-4 text-stone-600 group-hover:text-stone-400 transition-colors"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile header -->
+        <div>
+          <p class="comp-label mb-2">Mobile Header</p>
+          <div class="bg-white border border-stone-200 px-4 py-3 flex justify-between items-center shadow-sm rounded-xl">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-md flex items-center justify-center overflow-hidden border border-stone-100 bg-white">
+                <i data-lucide="scale" class="w-4 h-4 text-stone-700"></i>
+              </div>
+              <span class="text-sm font-semibold text-stone-800">Dashboard</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-stone-100 flex items-center justify-center">
+                <i data-lucide="user" class="w-4 h-4 text-stone-500"></i>
+              </div>
+              <span class="text-xs font-medium text-stone-700">Sarah</span>
+              <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-stone-400"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom nav -->
+        <div>
+          <p class="comp-label mb-2">Mobile Bottom Nav</p>
+          <div class="bg-white border border-stone-100 flex justify-around p-2 shadow-[0_-1px_8px_rgba(0,0,0,0.06)] rounded-xl">
+            <a href="#" class="relative flex flex-col items-center p-2 rounded-lg min-w-[56px] text-stone-900">
+              <i data-lucide="home" class="w-6 h-6 mb-1"></i>
+              <span class="text-[10px] font-medium">Dashboard</span>
+            </a>
+            <a href="#" class="relative flex flex-col items-center p-2 rounded-lg min-w-[56px] text-stone-400">
+              <i data-lucide="file-text" class="w-6 h-6 mb-1"></i>
+              <span class="text-[10px] font-medium">Documents</span>
+            </a>
+            <a href="#" class="relative flex flex-col items-center p-2 rounded-lg min-w-[56px] text-stone-400">
+              <div class="relative">
+                <i data-lucide="message-square" class="w-6 h-6 mb-1"></i>
+                <span class="absolute -top-0.5 right-2 w-4 h-4 bg-[#1e3a5c] text-white text-[8px] font-bold rounded-full flex items-center justify-center leading-none">2</span>
+              </div>
+              <span class="text-[10px] font-medium">Messages</span>
+            </a>
+            <a href="#" class="relative flex flex-col items-center p-2 rounded-lg min-w-[56px] text-stone-400">
+              <i data-lucide="credit-card" class="w-6 h-6 mb-1"></i>
+              <span class="text-[10px] font-medium">Billing</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ SANDBOX PANEL -->
+    <section id="s-sandbox" class="section-anchor">
+      <h2 class="comp-section-heading">Sandbox Panel</h2>
+      <div class="space-y-4">
+        <div>
+          <p class="comp-label mb-2">Collapsed</p>
+          <button style="font-family:ui-monospace,monospace;font-size:11px;background:#fef3c7;border:1px solid #fcd34d;padding:6px 10px;border-radius:8px;color:#78350f;white-space:nowrap">
+            ⚡ Building Case ▾
+          </button>
+        </div>
+        <div>
+          <p class="comp-label mb-2">Expanded</p>
+          <div style="font-family:ui-monospace,monospace;font-size:11px;background:white;border:1px solid #e7e5e4;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:200px">
+            <div style="background:#fef3c7;border-bottom:1px solid #fcd34d;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
+              <span style="color:#78350f;font-weight:700">⚡ Sandbox</span>
+              <span style="color:#78350f;cursor:pointer">✕</span>
+            </div>
+            <div>
+              <div style="padding:5px 10px;color:#1c1917;font-weight:700;background:#fef9c3">● Building Case</div>
+              <div style="padding:5px 10px;color:#57534e;cursor:pointer">New Client</div>
+              <div style="padding:5px 10px;color:#57534e;cursor:pointer">Overdue Payment</div>
+              <div style="padding:5px 10px;color:#57534e;cursor:pointer">Ready to File</div>
+              <div style="padding:5px 10px;color:#57534e;cursor:pointer">Case Filed</div>
+              <div style="padding:5px 10px;color:#57534e;cursor:pointer">341 Meeting</div>
+              <div style="padding:5px 10px;color:#57534e;cursor:pointer">All Caught Up</div>
+              <div style="padding:5px 10px;color:#57534e;cursor:pointer">Discharged</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ DOCUMENT PROGRESS -->
+    <section id="s-docprogress" class="section-anchor">
+      <h2 class="comp-section-heading">Document Progress Bar</h2>
+      <div class="comp-card space-y-4">
+        <div>
+          <p class="comp-label mb-2">0 of 10 submitted</p>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-stone-600">0 of 10 submitted</span>
+          </div>
+          <div class="h-1 bg-stone-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-400 rounded-full w-0"></div>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">6 of 10 submitted</p>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-stone-600">6 of 10 submitted</span>
+          </div>
+          <div class="h-1 bg-stone-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-400 rounded-full w-[60%]"></div>
+          </div>
+        </div>
+        <div>
+          <p class="comp-label mb-2">10 of 10 submitted — all complete</p>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-stone-600">10 of 10 submitted</span>
+          </div>
+          <div class="h-1 bg-stone-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-400 rounded-full w-full"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ CARD PATTERNS -->
+    <section id="s-cards" class="section-anchor">
+      <h2 class="comp-section-heading">Card Patterns</h2>
+      <div class="space-y-4">
+
+        <div>
+          <p class="comp-label mb-2">Standard card with ll-serif section heading</p>
+          <div class="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden">
+            <div class="px-5 py-4 border-b border-stone-100">
+              <h2 class="text-base font-bold text-stone-900 ll-serif">Payment Schedule</h2>
+            </div>
+            <div class="p-5">
+              <p class="text-sm text-stone-500">Card body content goes here.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Card with amber border (action required)</p>
+          <div class="bg-white rounded-xl border border-amber-200 shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-stone-100">
+              <h2 class="text-base font-bold text-stone-900 ll-serif">Retainer Agreement</h2>
+            </div>
+            <div class="p-5">
+              <p class="text-sm text-stone-500">Action required content.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Card with emerald border (success)</p>
+          <div class="bg-white rounded-xl border border-emerald-200 shadow-sm overflow-hidden">
+            <div class="p-5">
+              <p class="text-sm text-stone-500">Success state content.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="comp-label mb-2">Card with red border (overdue)</p>
+          <div class="bg-white rounded-xl border border-red-200 shadow-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-stone-100">
+              <h2 class="text-base font-bold text-stone-900 ll-serif">Next Payment</h2>
+            </div>
+            <div class="p-5">
+              <p class="text-sm text-red-500 font-semibold">Overdue · Apr 1, 2025</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<style>
+  .comp-section-heading {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1c1917;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e7e5e4;
+  }
+  .comp-card {
+    background: white;
+    border-radius: 0.75rem;
+    border: 1px solid #f5f5f4;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    padding: 1.25rem;
+  }
+  .comp-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #78716c;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+</style>
+
+<script>
+  // Build sidebar nav from sections
+  const sections = [
+    { id: 's-typography',   label: 'Typography' },
+    { id: 's-buttons',      label: 'Buttons' },
+    { id: 's-badges',       label: 'Status Badges' },
+    { id: 's-callouts',     label: 'Callouts' },
+    { id: 's-documents',    label: 'Documents' },
+    { id: 's-installments', label: 'Installments' },
+    { id: 's-accounts',     label: 'Accounts' },
+    { id: 's-infocards',    label: 'Info Cards' },
+    { id: 's-retainer',     label: 'Retainer / Paid' },
+    { id: 's-nextpayment',  label: 'Next Payment' },
+    { id: 's-actionitems',  label: 'Action Items' },
+    { id: 's-feesummary',   label: 'Fee Summary' },
+    { id: 's-stageprogress',label: 'Stage Progress' },
+    { id: 's-messages',     label: 'Messages' },
+    { id: 's-inputs',       label: 'Form Inputs' },
+    { id: 's-modals',       label: 'Modals' },
+    { id: 's-empty',        label: 'Empty States' },
+    { id: 's-layout',       label: 'Layout Chrome' },
+    { id: 's-sandbox',      label: 'Sandbox Panel' },
+    { id: 's-docprogress',  label: 'Doc Progress' },
+    { id: 's-cards',        label: 'Card Patterns' },
+  ];
+
+  const nav = document.getElementById('nav-links');
+  nav.innerHTML = sections.map(s =>
+    `<a href="#${s.id}" class="block px-3 py-1.5 rounded-lg text-stone-400 hover:bg-white/5 hover:text-stone-200 transition-colors">${s.label}</a>`
+  ).join('');
+
+  // Init icons
+  document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons({ nameAttr: 'data-lucide' });
+  });
+  lucide.createIcons({ nameAttr: 'data-lucide' });
+</script>
+</body>
+</html>

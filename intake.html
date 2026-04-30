@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lincoln Law Client Portal — Accounts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','ui-sans-serif','system-ui','sans-serif']}}}}</script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .pb-safe{padding-bottom:env(safe-area-inset-bottom)}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}.animate-fade-in{animation:fadeIn .5s ease-out}
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="data.js"></script>
+  <script src="shared.js"></script>
+  <script src="sandbox.js"></script>
+  <script>
+    const data = window.PORTAL_DATA;
+    const container = injectLayout();
+    const accounts = data.plaidAccounts;
+
+    const connected = accounts.filter(a => a.status === 'connected');
+    const disconnected = accounts.filter(a => a.status === 'disconnected');
+
+    function accountTypeIcon(type) {
+      if (type === 'checking') return 'landmark';
+      if (type === 'savings')  return 'piggy-bank';
+      if (type === 'credit')   return 'credit-card';
+      return 'wallet';
+    }
+
+    function accountTypeLabel(type) {
+      if (type === 'checking') return 'Checking';
+      if (type === 'savings')  return 'Savings';
+      if (type === 'credit')   return 'Credit Card';
+      return 'Account';
+    }
+
+    function accountCard(acct) {
+      const isDisconnected = acct.status === 'disconnected';
+      const syncText = isDisconnected
+        ? `Lost connection ${timeAgo(acct.lastSync)}`
+        : `Synced ${timeAgo(acct.lastSync)}`;
+
+      return `
+        <div class="bg-white rounded-xl border ${isDisconnected ? 'border-orange-200' : 'border-stone-100'} shadow-sm overflow-hidden">
+          <div class="p-5 flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl ${isDisconnected ? 'bg-orange-50' : 'bg-[#1e3a5c]/8'} flex items-center justify-center shrink-0">
+              ${icon(accountTypeIcon(acct.type), 'w-5 h-5 ' + (isDisconnected ? 'text-orange-400' : 'text-[#1e3a5c]'))}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p class="font-semibold text-stone-900 text-sm">${acct.accountName}</p>
+                  <p class="text-xs text-stone-400 mt-0.5">${acct.institution} · ${accountTypeLabel(acct.type)}</p>
+                </div>
+                ${isDisconnected
+                  ? `<span class="shrink-0 text-[11px] font-medium text-orange-600">Disconnected</span>`
+                  : `<span class="shrink-0 text-[11px] font-medium text-emerald-600">Connected</span>`
+                }
+              </div>
+              <div class="flex items-center gap-1.5 mt-2.5">
+                ${icon(isDisconnected ? 'wifi-off' : 'refresh-cw', 'w-3 h-3 ' + (isDisconnected ? 'text-orange-400' : 'text-stone-300'))}
+                <span class="text-[11px] ${isDisconnected ? 'text-orange-500' : 'text-stone-400'}">${syncText}</span>
+              </div>
+            </div>
+          </div>
+          ${isDisconnected ? `
+            <div class="px-5 pb-4">
+              <div class="border-l-2 border-orange-400 pl-3 py-1.5">
+                <p class="text-xs text-stone-600 leading-relaxed">We lost connection to this account. Please reconnect so we can keep your case information up to date.</p>
+              </div>
+              <a href="#placeholder-reconnect-plaid" onclick="portalAPI('POST','/api/portal/{clientId}/plaid/reconnect',{accountId:'${acct.id}',institution:'${acct.institution}'})" class="mt-3 w-full flex items-center justify-center gap-2 bg-stone-900 text-white py-3 rounded-xl text-sm font-semibold hover:bg-stone-800 transition-all">
+                ${icon('link-2', 'w-4 h-4')} Reconnect ${acct.institution}
+              </a>
+            </div>
+          ` : ''}
+        </div>`;
+    }
+
+    container.innerHTML = `
+    <div class="space-y-8 animate-fade-in">
+
+      <!-- Header -->
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-stone-900">Connected Accounts</h1>
+          <p class="text-sm text-stone-500 mt-1">${accounts.length === 0 ? 'No bank accounts connected yet' : connected.length + ' of ' + accounts.length + ' accounts connected via Plaid'}</p>
+        </div>
+        <a href="#placeholder-add-account" onclick="portalAPI('POST','/api/portal/{clientId}/plaid/connect',{})" class="shrink-0 flex items-center gap-2 bg-white border border-stone-200 text-stone-600 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-stone-50 hover:text-stone-900 transition-all">
+          ${icon('plus', 'w-4 h-4')} Add Account
+        </a>
+      </div>
+
+      ${disconnected.length > 0 ? `
+      <!-- Disconnected Alert Banner -->
+      <div class="border-l-2 border-orange-400 pl-4 py-2">
+        <p class="text-sm font-semibold text-stone-800">${disconnected.length} account${disconnected.length > 1 ? 's need' : ' needs'} reconnection</p>
+        <p class="text-xs text-stone-500 mt-0.5">Reconnecting keeps your case documents current and avoids delays.</p>
+      </div>
+      ` : ''}
+
+      ${disconnected.length > 0 ? `
+      <!-- Disconnected Accounts -->
+      <div>
+        <h2 class="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-3">Action Required</h2>
+        <div class="space-y-3">
+          ${disconnected.map(a => accountCard(a)).join('')}
+        </div>
+      </div>
+      ` : ''}
+
+      <!-- Connected Accounts -->
+      ${accounts.length === 0 ? `
+      <div class="flex flex-col items-center justify-center py-12 text-center gap-3 bg-stone-50 rounded-xl border border-stone-100">
+        ${icon('link-2', 'w-10 h-10 text-stone-200')}
+        <p class="font-medium text-stone-600 text-sm">No accounts connected</p>
+        <p class="text-xs text-stone-400 font-light max-w-xs leading-relaxed">Connect your bank accounts through Plaid so we can verify your financial information for the case.</p>
+        <a href="#placeholder-add-account" onclick="portalAPI('POST','/api/portal/{clientId}/plaid/connect',{})" class="mt-1 flex items-center gap-2 bg-[#1e3a5c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#152d47] transition-all">
+          ${icon('plus', 'w-4 h-4')} Connect an Account
+        </a>
+      </div>
+      ` : `
+      <div>
+        <h2 class="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-3">Connected</h2>
+        <div class="space-y-3">
+          ${connected.map(a => accountCard(a)).join('')}
+        </div>
+      </div>
+      `}
+
+      <!-- Plaid Info Footer -->
+      <div class="border-l-2 border-stone-200 pl-4 py-2">
+        <p class="text-xs text-stone-400 leading-relaxed">Your accounts are securely connected through Plaid. Lincoln Law uses read-only access to verify financial information required for your case. We never store your banking credentials.</p>
+      </div>
+
+    </div>`;
+
+    initIcons();
+  </script>
+</body>
+</html>

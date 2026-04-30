@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lincoln Law — Client Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #f7f6f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      color: #1c1917;
+      padding: 24px;
+    }
+
+    .ll-serif { font-family: 'Playfair Display', Georgia, serif; }
+
+    .wrap {
+      width: 100%;
+      max-width: 340px;
+    }
+
+    /* ── Branding ── */
+    .brand {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .logo-box {
+      width: 52px;
+      height: 52px;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #e7e5e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin: 0 auto 14px;
+    }
+    .logo-box img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+    }
+    .brand h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #1c1917;
+      line-height: 1.1;
+    }
+    .brand p {
+      font-size: 13px;
+      color: #78716c;
+      margin-top: 4px;
+    }
+
+    /* ── Form ── */
+    .field {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #57534e;
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid #d6d3d1;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1c1917;
+      outline: none;
+      transition: border-color 0.15s;
+      -webkit-appearance: none;
+    }
+    input::placeholder { color: #a8a29e; }
+    input:focus { border-color: #1c1917; }
+
+    .error-msg {
+      display: none;
+      font-size: 12px;
+      color: #dc2626;
+      margin-top: 10px;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 22px;
+      padding: 12px;
+      background: #1c1917;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    button[type="submit"]:hover    { background: #292524; }
+    button[type="submit"]:disabled { opacity: 0.6; cursor: default; }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: #a8a29e;
+    }
+    footer a {
+      color: #78716c;
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <script src="data.js"></script>
+  <script>
+    if (window.PORTAL_DATA && !window.PORTAL_DATA_MISSING) {
+      window.location.replace('index.html');
+    }
+  </script>
+  <script src="sandbox.js"></script>
+
+  <div class="wrap">
+
+    <div class="brand">
+      <div class="logo-box">
+        <img
+          src="https://raw.githubusercontent.com/HiJell0/HiJell0/fb70edba22f2a5ed46c167d3665a6edb3ef1baa8/LLawLogo.jpeg"
+          alt="Lincoln Law"
+          referrerpolicy="no-referrer"
+        >
+      </div>
+      <h1 class="ll-serif">Lincoln Law</h1>
+      <p>Client Portal</p>
+    </div>
+
+    <form id="login-form" novalidate>
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" autocomplete="username" placeholder="Enter your username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="Enter your password">
+      </div>
+
+      <p id="login-error" class="error-msg"></p>
+
+      <button type="submit" id="login-btn">Sign in</button>
+    </form>
+
+    <footer>
+      <p>Need help? <a href="mailto:support@lincolnlaw.com">Contact our office</a></p>
+    </footer>
+
+  </div>
+
+  <script>
+    const form      = document.getElementById('login-form');
+    const errorEl   = document.getElementById('login-error');
+    const btn       = document.getElementById('login-btn');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      errorEl.style.display = 'none';
+
+      if (!username || !password) {
+        errorEl.textContent = 'Please enter your username and password.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      if (window.portalAPI) portalAPI('POST', '/api/auth/login', { username });
+
+      btn.textContent = 'Signing in…';
+      btn.disabled = true;
+
+      // Production: POST credentials → receive PORTAL_DATA → window.loadPortalData(data)
+      setTimeout(() => { window.location.href = 'index.html'; }, 800);
+    });
+
+    ['username', 'password'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        errorEl.style.display = 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

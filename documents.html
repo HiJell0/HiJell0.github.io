@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lincoln Law Client Portal — Documents</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','ui-sans-serif','system-ui','sans-serif']}}}}</script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .pb-safe{padding-bottom:env(safe-area-inset-bottom)}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}.animate-fade-in{animation:fadeIn .5s ease-out}
+    @keyframes growWidth{from{width:0}}
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="data.js"></script>
+  <script src="shared.js"></script>
+  <script src="sandbox.js"></script>
+  <script>
+    const data = window.PORTAL_DATA;
+    const container = injectLayout();
+
+    function buildChecklist() {
+      return [...data.documents].sort((a, b) => {
+        const p = { needs_resubmission: 0, unsubmitted: 1, completed: 2 };
+        return (p[a.status] ?? 3) - (p[b.status] ?? 3);
+      });
+    }
+
+    const checklist = buildChecklist();
+    const total = checklist.length;
+    const submittedCount = checklist.filter(d => d.status === 'completed').length;
+    const pendingCount = total - submittedCount;
+    const submittedPct = (submittedCount / total) * 100;
+
+    function stateStyle(status) {
+      if (status === 'needs_resubmission') return { border: 'border-l-amber-400', text: 'Resubmit',        icon: 'alert-circle',   color: 'text-amber-500',   badge: 'text-amber-600'   };
+      if (status === 'unsubmitted')        return { border: 'border-l-amber-400', text: 'Upload Required', icon: 'upload',         color: 'text-amber-500',   badge: 'text-amber-600'   };
+      return                               { border: 'border-l-emerald-400', text: 'Complete',             icon: 'check-circle-2', color: 'text-emerald-500', badge: 'text-emerald-600' };
+    }
+
+    function openDocViewer(idx) {
+      const doc = checklist[idx];
+      openViewer(doc.name, doc.id);
+    }
+
+    function sheetContent(doc, docIdx) {
+      let actions = '';
+      if (doc.status === 'unsubmitted') {
+        actions = `<a href="#placeholder-upload-doc" onclick="portalAPI('POST','/api/portal/{clientId}/documents/${doc.id}/upload',{docId:'${doc.id}'})" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-stone-800 transition-all">
+          ${icon('upload-cloud', 'w-6 h-6')} Upload Document
+        </a>`;
+      } else if (doc.status === 'needs_resubmission') {
+        actions = `
+          ${doc.note ? `<div class="border-l-2 border-amber-400 pl-4 py-2">
+            <p class="text-xs font-medium text-stone-500 mb-1">Rejection Reason</p>
+            <p class="text-sm text-stone-600 italic">"${doc.note}"</p>
+          </div>` : ''}
+          <a href="#placeholder-reupload-doc" onclick="portalAPI('POST','/api/portal/{clientId}/documents/${doc.id}/reupload',{docId:'${doc.id}'})" class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-stone-800 transition-all">
+            ${icon('upload-cloud', 'w-6 h-6')} Upload Replacement
+          </a>
+          <button onclick="hideBottomSheet();openDocViewer(${docIdx})" class="w-full bg-white border border-stone-200 text-stone-700 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-stone-50 transition-all">
+            ${icon('eye', 'w-5 h-5')} View Submitted Document
+          </button>`;
+      } else {
+        actions = `
+          <div class="py-5 text-center border-t border-stone-100">
+            ${icon('check-circle-2', 'w-10 h-10 text-emerald-400 mx-auto mb-3')}
+            <p class="text-stone-800 font-semibold">Complete</p>
+            <p class="text-stone-400 text-sm mt-1 leading-relaxed">This document has been received. No further action needed.</p>
+          </div>
+          <button onclick="hideBottomSheet();openDocViewer(${docIdx})" class="w-full bg-white border border-stone-200 text-stone-600 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-stone-50 transition-all">
+            ${icon('eye', 'w-5 h-5')} View Document
+          </button>`;
+      }
+
+      return `
+        <div class="flex justify-between items-start mb-5">
+          <h2 class="text-xl font-bold text-stone-900 ll-serif leading-tight pr-8">${doc.name}</h2>
+          <button onclick="hideBottomSheet()" class="p-2 text-stone-400 hover:text-stone-700 transition-colors">
+            ${icon('x', 'w-5 h-5')}
+          </button>
+        </div>
+        ${doc.instructionsUrl ? `<a href="${doc.instructionsUrl}" target="_blank" class="inline-flex items-center gap-1.5 text-sm text-[#1e3a5c] font-medium hover:underline mb-6">${icon('external-link', 'w-3.5 h-3.5')} View Instructions</a>` : ''}
+        <div class="space-y-4">${actions}</div>`;
+    }
+
+    function openViewer(name, id) {
+      showViewer(`
+        <div class="flex items-center gap-4 p-4 bg-stone-900 text-white border-b border-stone-800 pb-safe">
+          <button onclick="hideViewer()" class="p-2 hover:bg-stone-800 rounded-full transition-colors">
+            ${icon('arrow-left', 'w-6 h-6')}
+          </button>
+          <h2 class="font-medium text-lg truncate flex-1">${name}</h2>
+        </div>
+        <div class="flex-1 bg-stone-800 flex items-center justify-center p-4 overflow-y-auto">
+          <div class="bg-white w-full max-w-2xl aspect-[8.5/11] shadow-2xl rounded-sm flex flex-col items-center justify-center text-stone-300 relative">
+            <div class="absolute inset-0 border-[16px] border-stone-100 pointer-events-none"></div>
+            ${icon('file-text', 'w-24 h-24 mb-4 opacity-20')}
+            <p class="font-mono text-sm opacity-40 uppercase tracking-widest">PDF Preview</p>
+            <p class="font-mono text-xs opacity-30 mt-2">${id}.pdf</p>
+          </div>
+        </div>`);
+    }
+
+    const pendingItems = checklist.map((doc, i) => ({...doc, _idx: i}))
+      .filter(d => d.status === 'unsubmitted' || d.status === 'needs_resubmission');
+    const submittedItems = checklist.map((doc, i) => ({...doc, _idx: i}))
+      .filter(d => d.status === 'completed');
+
+    let submittedOpen = false;
+    function toggleSubmitted() {
+      submittedOpen = !submittedOpen;
+      const list = document.getElementById('submitted-list');
+      const chevron = document.getElementById('submitted-chevron');
+      if (list) list.classList.toggle('hidden', !submittedOpen);
+      if (chevron) chevron.style.transform = submittedOpen ? 'rotate(180deg)' : '';
+    }
+
+    container.innerHTML = `
+    <div class="pb-10 animate-fade-in">
+
+      <!-- Page Header -->
+      <div class="pt-1 pb-6">
+        <h1 class="text-2xl font-bold text-stone-900 tracking-tight ll-serif">Documents</h1>
+      </div>
+
+      <!-- Progress -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-stone-600">${submittedCount} of ${total} submitted</span>
+        </div>
+        <div class="h-1 bg-stone-100 rounded-full overflow-hidden">
+          <div class="h-full bg-emerald-400 rounded-full" style="width:${submittedPct}%;animation:growWidth 1s ease-out"></div>
+        </div>
+      </div>
+
+      <!-- Needs Attention -->
+      ${pendingItems.length > 0 ? `<div class="space-y-2 mb-4">
+        ${pendingItems.map(doc => {
+          const s = stateStyle(doc.status);
+          return `<button onclick="showBottomSheet(sheetContent(checklist[${doc._idx}], ${doc._idx}))" class="w-full flex items-center justify-between p-4 bg-white rounded-xl border border-stone-100 border-l-4 ${s.border} shadow-sm transition-all text-left hover:border-stone-200">
+            <h3 class="font-medium text-stone-900">${doc.name}</h3>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[11px] font-medium ${s.badge} hidden sm:inline">${s.text}</span>
+              ${icon(s.icon, 'w-5 h-5 ' + s.color)}
+              ${icon('chevron-right', 'w-4 h-4 text-stone-200')}
+            </div>
+          </button>`;
+        }).join('')}
+      </div>` : ''}
+
+      <!-- Submitted (collapsible) -->
+      ${submittedItems.length > 0 ? `
+      <div class="mt-2">
+        <button onclick="toggleSubmitted()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-stone-100 bg-stone-50 hover:bg-stone-100 transition-colors text-sm font-medium text-stone-500">
+          <span class="flex items-center gap-2">
+            ${icon('check-circle-2', 'w-4 h-4 text-emerald-400')}
+            Submitted (${submittedItems.length})
+          </span>
+          <i data-lucide="chevron-down" id="submitted-chevron" class="w-4 h-4 text-stone-400" style="transition:transform .2s"></i>
+        </button>
+        <div id="submitted-list" class="hidden mt-2 space-y-2">
+          ${submittedItems.map(doc => {
+            const s = stateStyle(doc.status);
+            return `<div class="flex items-center justify-between p-4 bg-stone-50/50 rounded-xl border border-stone-100 border-l-4 ${s.border} opacity-60">
+              <h3 class="font-medium text-stone-500">${doc.name}</h3>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[11px] font-medium ${s.badge} hidden sm:inline">${s.text}</span>
+                ${icon(s.icon, 'w-4 h-4 ' + s.color)}
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+      ` : ''}
+
+      <!-- Send docs via messages -->
+      <div class="mt-8 flex items-center justify-center gap-2 text-xs text-stone-400">
+        ${icon('message-square', 'w-3.5 h-3.5')}
+        <span>Need to send us a document? <a href="communication.html" class="text-[#1e3a5c] font-semibold hover:underline">Send it through Messages →</a></span>
+      </div>
+
+    </div>`;
+
+    initIcons();
+  </script>
+</body>
+</html>

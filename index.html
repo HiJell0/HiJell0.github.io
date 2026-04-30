@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lincoln Law Client Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','ui-sans-serif','system-ui','sans-serif']}}}}</script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .pb-safe{padding-bottom:env(safe-area-inset-bottom)}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}.animate-fade-in{animation:fadeIn .5s ease-out}
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="data.js"></script>
+  <script src="shared.js"></script>
+  <script src="sandbox.js"></script>
+  <script>
+    const data = window.PORTAL_DATA;
+    const container = injectLayout();
+
+    const stages = ['Intake', 'Filing', 'Protected', 'Discharge', 'Fresh Start'];
+    const currentIdx = stages.indexOf(data.caseStage);
+
+    // Build action items exclusively from the tasks array
+    const allItems = data.tasks.filter(t => t.status === 'pending');
+    // Urgent items first, then by due date
+    const actionItems = allItems.sort((a, b) => {
+      if (a.urgent && !b.urgent) return -1;
+      if (!a.urgent && b.urgent) return 1;
+      if (a.dueDate && b.dueDate) return new Date(a.dueDate) - new Date(b.dueDate);
+      if (a.dueDate) return -1;
+      if (b.dueDate) return 1;
+      return 0;
+    });
+
+    // Stage dot HTML
+    function stageDot(stage, idx) {
+      const done = idx < currentIdx;
+      const cur = idx === currentIdx;
+      const isProt = stage === 'Protected';
+      const isFresh = stage === 'Fresh Start';
+
+      const size = isProt ? 'w-10 h-10 border-[3px]' : 'w-8 h-8 border-2 mt-1';
+      const color = done ? 'border-emerald-500 text-emerald-500'
+        : cur ? 'border-stone-900 text-stone-900 scale-110'
+        : 'border-stone-200 text-stone-300';
+
+      let inner = '';
+      if (isProt) {
+        const fill = done ? 'fill-emerald-500' : cur ? 'fill-stone-900' : 'fill-stone-200';
+        inner = icon('shield', 'w-4 h-4 ' + fill);
+      } else if (isFresh) {
+        const c = done ? 'text-emerald-500' : cur ? 'text-stone-900' : 'text-stone-300';
+        inner = icon('party-popper', 'w-3.5 h-3.5 ' + c);
+      } else if (done) {
+        inner = icon('check-circle-2', 'w-4 h-4 fill-emerald-500 text-white');
+      } else {
+        const fill = cur ? 'fill-stone-900' : 'fill-stone-300';
+        inner = icon('circle', 'w-2.5 h-2.5 ' + fill);
+      }
+
+      const labelColor = cur ? 'text-stone-900' : done ? 'text-stone-700' : 'text-stone-400';
+      const freshColor = isFresh && cur ? 'text-emerald-600' : '';
+
+      return `<div class="flex sm:flex-col items-center gap-2 sm:gap-1.5 flex-1 sm:text-center">
+        <div class="relative flex items-center justify-center shrink-0 bg-white transition-all duration-500 ${size} ${color} rounded-full shadow-sm">${inner}</div>
+        <p class="text-sm font-bold ${labelColor} ${freshColor}">${stage}</p>
+      </div>`;
+    }
+
+    // Render
+    const progressWidth = (currentIdx / (stages.length - 1)) * 100;
+
+    container.innerHTML = `
+    <div class="space-y-6 animate-fade-in">
+      <div class="flex items-center gap-4">
+        ${(function() {
+          const initials = (data.client.fullName || data.client.firstName || '')
+            .split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+          return data.client.photoUrl
+            ? `<img src="${data.client.photoUrl}" alt="${data.client.firstName}" class="w-12 h-12 rounded-full object-cover shrink-0 border-2 border-white shadow-md">`
+            : `<div class="w-12 h-12 rounded-full shrink-0 border-2 border-white shadow-md bg-[#1e3a5c] flex items-center justify-center text-white font-bold text-base select-none">${initials}</div>`;
+        })()}
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-stone-900 ll-serif">Welcome back, ${data.client.firstName || 'there'}</h1>
+        </div>
+      </div>
+
+
+      <!-- Case Progress -->
+      <section class="bg-white rounded-xl p-4 shadow-sm border border-stone-100">
+        <div class="mb-6">
+          <h2 class="text-xl font-bold text-stone-900 ll-serif">Case Progress</h2>
+        </div>
+        <div class="relative mt-2 px-2">
+          <div class="absolute top-5 left-0 right-0 h-0.5 bg-stone-100 -translate-y-1/2 rounded-full hidden sm:block mx-6"></div>
+          <div class="absolute top-5 left-0 h-0.5 bg-emerald-500 -translate-y-1/2 rounded-full hidden sm:block transition-all duration-1000 mx-6" style="width:calc(${progressWidth}% - 3rem)"></div>
+          <div class="flex flex-col sm:flex-row justify-between relative z-10 gap-6 sm:gap-0">
+            ${stages.map((s, i) => stageDot(s, i)).join('')}
+          </div>
+        </div>
+      </section>
+
+      ${data.caseNumber ? `
+      <!-- Case Filed -->
+      <section class="bg-white rounded-xl p-4 shadow-sm border border-stone-100">
+        <div class="flex items-start gap-3">
+          <i data-lucide="shield" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-semibold text-stone-900 text-sm">Case Filed</p>
+            <p class="text-xs text-stone-500 mt-0.5">Case No. ${data.caseNumber} · Filed ${fmtShort(data.filingDate)}</p>
+            <p class="text-xs text-emerald-600 font-medium mt-1.5">Automatic stay in effect — all creditor contact is prohibited</p>
+          </div>
+        </div>
+      </section>` : ''}
+
+      ${data.meetingDate && new Date(data.meetingDate) > new Date() ? `
+      <!-- 341 Meeting (upcoming only) -->
+      <section class="bg-white rounded-xl p-4 shadow-sm border border-stone-100">
+        <div class="flex items-start gap-3">
+          <i data-lucide="calendar" class="w-5 h-5 text-[#1e3a5c] shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-semibold text-stone-900 text-sm">341 Meeting Scheduled</p>
+            <p class="text-xs text-stone-500 mt-0.5">${fmtShort(data.meetingDate)}${data.meetingLocation ? ' · ' + data.meetingLocation : ''}</p>
+            <p class="text-xs text-stone-400 font-light mt-1">Bring photo ID and your Social Security card to the meeting.</p>
+          </div>
+        </div>
+      </section>` : ''}
+
+      ${data.caseStage === 'Fresh Start' && data.dischargeDate ? `
+      <!-- Discharge Granted -->
+      <section class="bg-white rounded-xl p-4 shadow-sm border border-emerald-100">
+        <div class="flex items-start gap-3">
+          <i data-lucide="party-popper" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i>
+          <div>
+            <p class="font-semibold text-stone-900 text-sm">Discharge Granted</p>
+            <p class="text-xs text-stone-500 mt-0.5">Granted ${fmtShort(data.dischargeDate)}</p>
+            <p class="text-xs text-stone-400 font-light mt-1">Your eligible debts have been legally eliminated.</p>
+          </div>
+        </div>
+      </section>` : ''}
+
+      <!-- Action Required -->
+      <section class="bg-white rounded-xl border border-stone-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-stone-100">
+          <h2 class="text-xl font-bold text-stone-900 ll-serif">Action Required</h2>
+        </div>
+        ${actionItems.length === 0
+          ? `<p class="text-sm text-stone-400 py-10 text-center">No pending items.</p>`
+          : `<div>
+              ${actionItems.map(item => `
+                <a href="${item.link || '#'}" class="flex items-start gap-4 px-5 py-4 border-b border-stone-50 last:border-b-0 hover:bg-stone-50/60 transition-colors group">
+                  <div class="w-0.5 self-stretch rounded-full shrink-0 ${item.urgent ? 'bg-amber-400' : 'bg-stone-200'}"></div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between gap-4">
+                      <p class="text-sm font-medium text-stone-900 leading-snug">${item.title}</p>
+                      <span class="text-stone-300 group-hover:text-stone-500 transition-colors shrink-0 mt-0.5">${icon('arrow-right', 'w-3.5 h-3.5')}</span>
+                    </div>
+                    ${item.description ? `<p class="text-xs text-stone-400 font-light mt-0.5 leading-relaxed">${item.description}</p>` : ''}
+                    ${item.dueDate ? `<p class="text-xs text-stone-400 font-light mt-1.5">Due ${fmtShort(item.dueDate)}</p>` : ''}
+                  </div>
+                </a>`).join('')}
+            </div>`
+        }
+      </section>
+    </div>`;
+
+    initIcons();
+  </script>
+</body>
+</html>
