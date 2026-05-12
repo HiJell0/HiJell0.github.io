@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sable Pipeline — Recreation</title>
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<!-- Preload all 8 scene images at page load so they're cached by the time the
+     user navigates to each slide. Removes the 2-3s per-slide image fetch. -->
+<link rel="preload" as="image" href="images/welcome.png">
+<link rel="preload" as="image" href="images/politician.png">
+<link rel="preload" as="image" href="images/surfer.png">
+<link rel="preload" as="image" href="images/pelican.png">
+<link rel="preload" as="image" href="images/oil%20rig.png">
+<link rel="preload" as="image" href="images/pipeline.png">
+<link rel="preload" as="image" href="images/voting.png">
+<link rel="preload" as="image" href="images/fixed%20pipeline.png">
+<link rel="preload" as="image" href="images/politician%20cutout.jpg">
+<link rel="preload" as="image" href="images/surfer%20cutout.jpg">
+<link rel="preload" as="image" href="images/Pelican%20cutout.jpg">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
